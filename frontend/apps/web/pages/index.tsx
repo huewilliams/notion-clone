@@ -3,13 +3,12 @@ import { Button } from "ui";
 
 const StyledWrap = styled.div`
   color: red;
-  background-color: red;
 `;
 
 export default function Web() {
   return (
     <StyledWrap>
-      <h1>Web</h1>
+      <h4>📓 Notion Clone</h4>
       <Button />
     </StyledWrap>
   );
