@@ -15,7 +15,6 @@ export default function List() {
 const Banner = styled.img`
   height: 200px;
   width: 100%;
-  background: darkblue;
 `;
 
 const ListWrapper = styled.div`
@@ -24,6 +23,7 @@ const ListWrapper = styled.div`
 
 const Header = styled.h1`
   font-size: 56px;
+  font-weight: 600;
 `;
 
 const CreateNewPageButton = styled.button`
