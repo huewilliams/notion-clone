@@ -1,15 +1,42 @@
 import styled from "@emotion/styled";
-import { Button } from "ui";
 
-const StyledWrap = styled.div`
-  color: red;
-`;
-
-export default function Web() {
+export default function List() {
   return (
-    <StyledWrap>
-      <h4>📓 Notion Clone</h4>
-      <Button />
-    </StyledWrap>
+    <>
+      <Banner src={"/images/wood.jpg"}/>
+      <ListWrapper>
+        <Header>📓 Notion Clone</Header>
+        <CreateNewPageButton>create new page</CreateNewPageButton>
+      </ListWrapper>
+    </>
   );
 }
+
+const Banner = styled.img`
+  height: 200px;
+  width: 100%;
+  background: darkblue;
+`;
+
+const ListWrapper = styled.div`
+  padding: 40px 100px;
+`;
+
+const Header = styled.h1`
+  font-size: 56px;
+`;
+
+const CreateNewPageButton = styled.button`
+  margin-top: 20px;
+  padding: 8px;
+
+  color: white;
+  background: dodgerblue;
+  border: royalblue solid 1px;
+  border-radius: 6px;
+  cursor: pointer;
+  
+  &:hover {
+    background: #1F70F0;
+  }
+`;
