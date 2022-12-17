@@ -21,7 +21,7 @@ const Banner = styled.img`
 `;
 
 const ListWrapper = styled.div`
-  padding: 40px 200px;
+  padding: 40px 15%;
 `;
 
 const Header = styled.h1`

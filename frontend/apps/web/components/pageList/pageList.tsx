@@ -5,13 +5,13 @@ import {PageListItem} from "../index";
 export default function PageList() {
   return (
     <Wrapper>
+      <PageListItem page={{title: 'Initial Page'}}/>
+      <PageListItem page={{title: 'Initial Page'}}/>
+      <PageListItem page={{title: 'Initial Page'}}/>
       <CreateNewPageButton>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
       </CreateNewPageButton>
-      <PageListItem page={{title: 'Initial Page'}}/>
-      <PageListItem page={{title: 'Initial Page'}}/>
-      <PageListItem page={{title: 'Initial Page'}}/>
     </Wrapper>
   )
 }
