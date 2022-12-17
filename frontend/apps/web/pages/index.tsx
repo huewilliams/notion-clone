@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import {PageList} from "../components";
 
 export default function List() {
   return (
@@ -7,6 +8,8 @@ export default function List() {
       <ListWrapper>
         <Header>📓 Notion Clone</Header>
         <CreateNewPageButton>create new page</CreateNewPageButton>
+        <HorizontalDivider/>
+        <PageList/>
       </ListWrapper>
     </>
   );
@@ -18,12 +21,18 @@ const Banner = styled.img`
 `;
 
 const ListWrapper = styled.div`
-  padding: 40px 100px;
+  padding: 40px 200px;
 `;
 
 const Header = styled.h1`
   font-size: 56px;
   font-weight: 600;
+`;
+
+const HorizontalDivider = styled.div`
+  margin: 20px 0;
+
+  border-bottom: 1px solid #B4B4B4;
 `;
 
 const CreateNewPageButton = styled.button`
