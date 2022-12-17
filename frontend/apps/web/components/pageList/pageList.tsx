@@ -1,16 +1,26 @@
 import styled from "@emotion/styled";
 import {PlusSvg} from "../../assets/svgs";
+import {PageListItem} from "../index";
 
 export default function PageList() {
   return (
-    <div>
+    <Wrapper>
       <CreateNewPageButton>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
       </CreateNewPageButton>
-    </div>
+      <PageListItem page={{title: 'Initial Page'}}/>
+      <PageListItem page={{title: 'Initial Page'}}/>
+      <PageListItem page={{title: 'Initial Page'}}/>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
 
 const CreateNewPageButton = styled.button`
   display: flex;
