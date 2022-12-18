@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
-import Slim from "slim/Slim";
+import {Slim} from "slim";
 
 export default function Page() {
   return (
