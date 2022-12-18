@@ -1,20 +1,24 @@
 import styled from "@emotion/styled";
+import Link from "next/link";
 import {Icon} from "../../index";
 
 interface Page {
   title: string;
+  id: string;
 }
 
 interface Props {
   page: Page;
 }
 
-export default function PageListItem({page: {title}}: Props) {
+export default function PageListItem({page: {title, id}}: Props) {
   return (
-    <Wrapper>
-      <Icon iconName={"document"} width={20} height={20}/>
-      <Title>{title}</Title>
-    </Wrapper>
+    <Link href={`/pages/${id}`}>
+      <Wrapper>
+        <Icon iconName={"document"} width={20} height={20}/>
+        <Title>{title}</Title>
+      </Wrapper>
+    </Link>
   )
 }
 
