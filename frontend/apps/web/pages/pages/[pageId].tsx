@@ -1,8 +1,19 @@
-import {useRouter} from "next/router";
+import styled from "@emotion/styled";
+import Image from "next/image";
 
 export default function Page() {
-  const router = useRouter();
-  const {pageId} = router.query;
-
-  return <div>{pageId}</div>
+  return (
+    <>
+      <Banner>
+        <Image src={"/images/city.jpg"} alt={"city"} fill style={{objectFit: "cover"}}/>
+      </Banner>
+    </>
+  )
 }
+
+const Banner = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
