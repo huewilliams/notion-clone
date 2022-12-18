@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
+import Slim from "slim/Slim";
 
 export default function Page() {
   return (
@@ -10,6 +11,7 @@ export default function Page() {
       <Wrapper>
         <Emoji>📄</Emoji>
         <Title>Initial Page</Title>
+        <Slim/>
       </Wrapper>
     </>
   )
