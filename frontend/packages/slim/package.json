@@ -1,0 +1,17 @@
+{
+  "name": "slim",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "dependencies": {
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "slate": "^0.87.0",
+    "slate-react": "^0.87.1",
+    "react": "^18.2.0"
+  }
+}
