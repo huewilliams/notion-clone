@@ -1,10 +1,18 @@
 import styled from "@emotion/styled";
 import {PageList} from "../components";
+import Image from "next/image";
 
 export default function List() {
   return (
     <>
-      <Banner src={"/images/wood.jpg"}/>
+      <Banner>
+        <Image
+          src={"/images/library.jpg"}
+          alt={"library banner"}
+          fill
+          style={{objectFit: "cover", objectPosition: "center center"}}
+        />
+      </Banner>
       <ListWrapper>
         <Header>📓 Notion Clone</Header>
         <CreateNewPageButton>create new page</CreateNewPageButton>
@@ -15,7 +23,8 @@ export default function List() {
   );
 }
 
-const Banner = styled.img`
+const Banner = styled.div`
+  position: relative;
   width: 100%;
   height: 200px;
 `;

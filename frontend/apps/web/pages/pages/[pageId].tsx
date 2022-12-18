@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <Banner>
-        <Image src={"/images/city.jpg"} alt={"city"} fill style={{objectFit: "cover"}}/>
+        <Image src={"/images/city.jpg"} alt={"city banner"} fill style={{objectFit: "cover"}}/>
       </Banner>
     </>
   )
@@ -15,5 +15,4 @@ const Banner = styled.div`
   position: relative;
   width: 100%;
   height: 200px;
-  object-fit: cover;
 `;
