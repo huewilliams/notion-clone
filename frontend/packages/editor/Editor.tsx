@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
-import {schema} from "prosemirror-schema-basic"
 import {EditorState} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
+import {schema} from "./model/schema";
 
 export function Editor() {
   const editorRef = useRef<HTMLDivElement>(null);
