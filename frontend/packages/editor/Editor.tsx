@@ -11,8 +11,11 @@ export function Editor() {
   const state = EditorState.create({schema});
 
   useEffect(() => {
-    new EditorView(editorRef.current, {state});
-  });
+    const view = new EditorView(editorRef.current, {state});
+    return () => {
+      view.destroy();
+    }
+  }, [state]);
 
   return (
     <div css={divStyle} ref={editorRef}/>
