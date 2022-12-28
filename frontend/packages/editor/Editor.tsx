@@ -6,6 +6,7 @@ import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
 import {css} from "@emotion/react";
 import {schema} from "./model/schema";
+import PlaceholderPlugin from "./plugins/placeholderPlugin";
 
 export function Editor() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -13,7 +14,8 @@ export function Editor() {
   const state = EditorState.create({
     schema,
     plugins: [
-      keymap(baseKeymap)
+      keymap(baseKeymap),
+      PlaceholderPlugin(),
     ]
   });
 

@@ -7,3 +7,8 @@
     font-weight: 500;
     src: url("/fonts/Pretendard-Regular.otf") format("truetype");
 }
+
+.empty-node::before {
+    content: 'Try typing anything!';
+    color: #B4B4B4;
+}
