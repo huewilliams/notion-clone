@@ -10,11 +10,13 @@ export const headingCommand: Command = (state, dispatch) => {
     const to = state.selection.$head.pos;
     const header = schema.nodes.heading.createAndFill({level: prevTextContent.length});
 
+    if (!header) return false;
+
     const tr = state.tr;
     tr.replaceWith(from - 1, to, header);
     dispatch(tr);
 
-    return false;
+    return true;
   }
 
   return false;
