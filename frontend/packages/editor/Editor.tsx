@@ -16,7 +16,7 @@ export function Editor() {
     schema,
     plugins: [
       keymap(baseKeymap),
-      keymap({"Space": headingCommand}),
+      keymap({" ": headingCommand}),
       PlaceholderPlugin(),
     ]
   });
