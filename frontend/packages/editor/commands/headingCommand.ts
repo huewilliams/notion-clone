@@ -5,7 +5,7 @@ export const headingCommand: Command = (state, dispatch) => {
   const prevTextContent = state.selection.$head.parent.textContent;
   const isHeadingCommand = prevTextContent.split('').every(c => c === "#");
 
-  if (prevTextContent.length < 4 && isHeadingCommand && dispatch) {
+  if (prevTextContent.length < 4 && dispatch) {
     const from = state.selection.$head.pos - prevTextContent.length;
     const to = state.selection.$head.pos;
     const header = schema.nodes.heading.createAndFill({level: prevTextContent.length});
