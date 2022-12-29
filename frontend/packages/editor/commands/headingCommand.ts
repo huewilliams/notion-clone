@@ -2,6 +2,10 @@ import {Command} from "prosemirror-state";
 import {schema} from "../model/schema";
 
 export const headingCommand: Command = (state, dispatch) => {
+  const tr = state.tr;
+  tr.insertText('space');
+  dispatch(tr);
+  return false;
   const prevTextContent = state.selection.$head.parent.textContent;
   const isHeadingCommand = prevTextContent.split('').every(c => c === "#");
 
