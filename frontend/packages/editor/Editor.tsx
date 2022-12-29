@@ -7,6 +7,7 @@ import {baseKeymap} from "prosemirror-commands";
 import {css} from "@emotion/react";
 import {schema} from "./model/schema";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
+import {headingCommand} from "./commands/headingCommand";
 
 export function Editor() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -15,12 +16,19 @@ export function Editor() {
     schema,
     plugins: [
       keymap(baseKeymap),
+      keymap({"Space": headingCommand}),
       PlaceholderPlugin(),
     ]
   });
 
   useEffect(() => {
-    const view = new EditorView(editorRef.current, {state});
+    const view = new EditorView(editorRef.current, {
+      state,
+      dispatchTransaction: tr => {
+        const newState = view.state.apply(tr);
+        view.updateState(newState);
+      },
+    });
     return () => {
       view.destroy();
     }
