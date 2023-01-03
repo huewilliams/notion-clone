@@ -6,11 +6,11 @@ export function wrapTransaction(tr: Transaction, state: EditorState): Transactio
   const currentTextContent = tr.doc.textContent;
   const lastText = currentTextContent.length > 0 ? currentTextContent[currentTextContent.length - 1] : null;
 
-  const isNotBackspace = currentTextContent.length > prevTextContent.length;
   const isWhiteSpaceContent = lastText && /\s/g.test(lastText);
-  const isHeadingCommand = prevTextContent.split('').every(c => c === "#");
+  const isSpace = isWhiteSpaceContent && currentTextContent.length > prevTextContent.length;
+  const isHeadingCommand = prevTextContent.length > 0 && prevTextContent.split('').every(c => c === "#");
 
-  if (isNotBackspace && isWhiteSpaceContent && isHeadingCommand) {
+  if (isSpace && isHeadingCommand) {
     const from = state.selection.$head.pos - prevTextContent.length;
     const to = state.selection.$head.pos;
     const header = schema.nodes.heading.createAndFill({level: prevTextContent.length});
