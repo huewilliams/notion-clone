@@ -3,7 +3,7 @@ import {schema} from "../model/schema";
 
 export const headingCommand: Command = (state, dispatch) => {
   const prevTextContent = state.selection.$head.parent.textContent;
-  const isHeadingCommand = prevTextContent.split('').every(c => c === "#");
+  const isHeadingCommand = prevTextContent.length > 0 && prevTextContent.split('').every(c => c === "#");
 
   if (prevTextContent.length < 4 && isHeadingCommand && dispatch) {
     const from = state.selection.$head.pos - prevTextContent.length;
