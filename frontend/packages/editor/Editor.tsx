@@ -8,6 +8,7 @@ import {css} from "@emotion/react";
 import {schema} from "./model/schema";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {headingCommand} from "./commands/headingCommand";
+import {wrapTransaction} from "./android/wrapTransaction";
 
 export function Editor() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -25,7 +26,9 @@ export function Editor() {
     const view = new EditorView(editorRef.current, {
       state,
       dispatchTransaction: tr => {
-        const newState = view.state.apply(tr);
+        const newTr = wrapTransaction(tr, view.state);
+        console.log('change')
+        const newState = view.state.apply(newTr);
         view.updateState(newState);
       },
     });
