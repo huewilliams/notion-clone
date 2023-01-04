@@ -21,6 +21,13 @@ export const schema = new Schema({
         return ['h' + node.attrs.level, 0]
       }
     },
+    blockquote: {
+      content: "text*",
+      group: 'block',
+      toDOM() {
+        return ['blockquote', {class: "editor-blockquote"}, 0]
+      }
+    },
     text: {
       group: 'inline'
     },
