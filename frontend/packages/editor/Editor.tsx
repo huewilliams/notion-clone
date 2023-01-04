@@ -39,7 +39,7 @@ export function Editor() {
   }, [state]);
 
   return (
-    <div css={divStyle} ref={editorRef}/>
+    <div spellCheck={false} css={divStyle} ref={editorRef}/>
   )
 }
 
