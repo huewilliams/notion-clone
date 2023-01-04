@@ -3,4 +3,8 @@
 }
 
 .editor-blockquote {
+  padding: 6px 10px;
+  color: gray;
+
+  border-left: 4px solid #B4B4B4;
 }
