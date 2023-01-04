@@ -7,7 +7,7 @@ import {baseKeymap} from "prosemirror-commands";
 import {css} from "@emotion/react";
 import {schema} from "./model/schema";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
-import {headingCommand} from "./commands/headingCommand";
+import {spaceCommand} from "./commands/spaceCommand";
 import {wrapTransaction} from "./android/wrapTransaction";
 import {backspaceCommand} from "./commands/backspaceCommand";
 
@@ -18,7 +18,7 @@ export function Editor() {
     schema,
     plugins: [
       keymap(baseKeymap),
-      keymap({" ": headingCommand}),
+      keymap({" ": spaceCommand}),
       keymap({"Backspace": backspaceCommand}),
       PlaceholderPlugin(),
     ]
