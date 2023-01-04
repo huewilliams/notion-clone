@@ -3,7 +3,7 @@ import {schema} from "../model/schema";
 
 export const backspaceCommand: Command = (state, dispatch) => {
   const isEmptyContent = state.selection.$head.parent.textContent.length < 1;
-  if (!isEmptyContent) return false;
+  if (!isEmptyContent || !dispatch) return false;
 
   const from = state.selection.$head.pos;
   const to = state.selection.$head.pos;
