@@ -1,4 +1,4 @@
-import {Command} from "prosemirror-state";
+import {Command, TextSelection} from "prosemirror-state";
 import {schema} from "../model/schema";
 
 export const headingCommand: Command = (state, dispatch) => {
@@ -14,6 +14,7 @@ export const headingCommand: Command = (state, dispatch) => {
 
     const tr = state.tr;
     tr.replaceWith(from - 1, to, header);
+    tr.setSelection(new TextSelection(tr.doc.resolve(from - 1), tr.doc.resolve(from - 1)));
     dispatch(tr);
 
     return true;
