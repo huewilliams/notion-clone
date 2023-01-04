@@ -30,6 +30,7 @@ export const spaceCommand: Command = (state, dispatch) => {
 
     const tr = state.tr;
     tr.replaceWith(from - 1, to, blockquote);
+    tr.setSelection(new TextSelection(tr.doc.resolve(from - 1), tr.doc.resolve(from - 1)));
     dispatch(tr);
 
     return true;
