@@ -1,4 +1,6 @@
-module.exports = {
+const withTM = require("next-transpile-modules")(["editor"]);
+
+const nextConfig = {
   reactStrictMode: true,
   compiler: {
     emotion: true,
@@ -7,3 +9,5 @@ module.exports = {
     transpilePackages: ["ui"],
   },
 };
+
+module.exports = withTM(nextConfig);
