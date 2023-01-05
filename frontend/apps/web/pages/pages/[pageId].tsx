@@ -11,7 +11,7 @@ export default function Page() {
       <Wrapper>
         <Emoji>📄</Emoji>
         <Title>Initial Page</Title>
-        <Editor/>
+        <Editor placeholder={"Input Anything!"}/>
       </Wrapper>
     </>
   )

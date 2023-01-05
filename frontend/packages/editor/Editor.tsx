@@ -10,8 +10,13 @@ import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {spaceCommand} from "./commands/spaceCommand";
 import {wrapTransaction} from "./android/wrapTransaction";
 import {backspaceCommand} from "./commands/backspaceCommand";
+import "./Editor.css";
 
-export function Editor() {
+interface Props {
+  placeholder?: string;
+}
+
+export function Editor({placeholder}: Props) {
   const editorRef = useRef<HTMLDivElement>(null);
 
   const state = EditorState.create({
@@ -20,7 +25,7 @@ export function Editor() {
       keymap(baseKeymap),
       keymap({" ": spaceCommand}),
       keymap({"Backspace": backspaceCommand}),
-      PlaceholderPlugin(),
+      PlaceholderPlugin(placeholder),
     ]
   });
 

@@ -1,5 +1,6 @@
 .empty-node::before {
-  content: '입력하세요';
+  content: attr(data-placeholder);
+  color: #B4B4B4;
 }
 
 .editor-blockquote {
