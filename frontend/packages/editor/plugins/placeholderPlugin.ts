@@ -2,7 +2,7 @@ import {Plugin} from "prosemirror-state";
 import {Decoration, DecorationSet} from "prosemirror-view";
 import {Node} from "prosemirror-model";
 
-export default function placeholderPlugin() {
+export default function placeholderPlugin(placeholder?: string) {
   return new Plugin({
     props: {
       decorations: state => {
@@ -13,7 +13,8 @@ export default function placeholderPlugin() {
           if (node.type.isBlock && node.childCount === 0 && isSelectedPos) {
             decorations.push(
               Decoration.node(pos, pos + node.nodeSize, {
-                class: 'empty-node'
+                class: 'empty-node',
+                'data-placeholder': placeholder,
               })
             )
           }
