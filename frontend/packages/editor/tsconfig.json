@@ -4,5 +4,6 @@
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "strict": true
   }
 }
