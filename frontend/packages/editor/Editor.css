@@ -9,3 +9,9 @@
 
   border-left: 4px solid #B4B4B4;
 }
+
+.editor-inlineCode {
+  padding: 1px 4px;
+  background-color: #B4B4B4;
+  border-radius: 4px;
+}
