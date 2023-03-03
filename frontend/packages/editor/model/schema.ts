@@ -33,10 +33,16 @@ export const schema = new Schema({
     },
     inlineCode: {
       inline: true,
+      content: 'text*',
       group: 'inline',
       toDOM() {
         return ['span', {class: "editor-inlineCode"}, 0]
       }
     },
   },
+  marks: {
+    code: {
+      toDOM() {return ["code", {class: "editor-inlineCode"}]}
+    }
+  }
 });
