@@ -15,14 +15,14 @@ export const schema = new Schema({
     },
     heading: {
       attrs: {level: {default: 1}},
-      content: "text*",
+      content: 'text*',
       group: 'block',
       toDOM(node) {
         return ['h' + node.attrs.level, 0]
       }
     },
     blockquote: {
-      content: "text*",
+      content: 'text*',
       group: 'block',
       toDOM() {
         return ['blockquote', {class: "editor-blockquote"}, 0]
@@ -30,6 +30,13 @@ export const schema = new Schema({
     },
     text: {
       group: 'inline'
+    },
+    inlineCode: {
+      inline: true,
+      group: 'inline',
+      toDOM() {
+        return ['span', {class: "editor-inlineCode"}, 0]
+      }
     },
   },
 });
