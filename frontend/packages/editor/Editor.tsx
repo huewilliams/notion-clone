@@ -36,6 +36,7 @@ export function Editor({placeholder}: Props) {
       state,
       dispatchTransaction: tr => {
         const newTr = wrapTransaction(tr, view.state);
+        newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
       },
