@@ -1,25 +1,26 @@
 import {EditorState, TextSelection, Transaction} from "prosemirror-state";
 import {schema} from "../model/schema";
+import {isEqualDifferencePartToExpectChar} from "../utils/isEqualDifferencePartToExpectChar";
 
-export function inlineCodeTransaction(state: EditorState): Transaction | null {
+export function inlineCodeTransaction(state: EditorState, tr: Transaction): Transaction | null {
   const prevTextContent = state.selection.$head.parent.textContent;
-
-  const {tr} = state;
+  const currentTextContent = tr.selection.$head.parent.textContent;
   const currentPos = tr.selection.$anchor.pos;
+  const currentBacktickOffset = isEqualDifferencePartToExpectChar(currentTextContent, prevTextContent, "`");
 
-  const textContentBeforeCurrent = prevTextContent.slice(0, currentPos - 1);
-  const isBacktickExist = textContentBeforeCurrent.includes("`");
-  if (!isBacktickExist) return null;
+  const textContentBeforeCurrent = prevTextContent.slice(0, currentBacktickOffset);
+  const isPrevBacktickExist = textContentBeforeCurrent.includes("`");
+  if (!isPrevBacktickExist) return null;
 
-  const backtickOffset = prevTextContent.lastIndexOf("`");
-  const targetText = prevTextContent.slice(backtickOffset + 1, currentPos);
+  const prevBacktickOffset = prevTextContent.lastIndexOf("`");
+  const targetText = currentTextContent.slice(prevBacktickOffset + 1, currentBacktickOffset);
   if (targetText.length < 1) return null;
 
   const startPos = tr.selection.$anchor.start();
-  tr.replaceWith(startPos + backtickOffset, currentPos + 1, schema.text(targetText));
-  tr.addMark(startPos + backtickOffset, currentPos - 1, schema.marks.inlineCode.create());
+  tr.replaceWith(startPos + prevBacktickOffset, currentPos, schema.text(targetText));
+  tr.addMark(startPos + prevBacktickOffset, currentPos - 2, schema.marks.inlineCode.create());
   tr.removeStoredMark(schema.marks.inlineCode);
-  tr.setSelection(new TextSelection(tr.doc.resolve(currentPos - 1)));
+  tr.setSelection(new TextSelection(tr.doc.resolve(currentPos - 2)));
 
   return tr;
 }

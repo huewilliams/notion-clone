@@ -10,7 +10,6 @@ import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {spaceCommand} from "./commands/spaceCommand";
 import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand} from "./commands/backspaceCommand";
-import {backtickCommand} from "./commands/backtickCommand";
 import "./Editor.css";
 
 interface Props {
@@ -26,7 +25,6 @@ export function Editor({placeholder}: Props) {
       keymap(baseKeymap),
       keymap({" ": spaceCommand}),
       keymap({"Backspace": backspaceCommand}),
-      keymap({"`": backtickCommand}),
       PlaceholderPlugin(placeholder),
     ]
   });

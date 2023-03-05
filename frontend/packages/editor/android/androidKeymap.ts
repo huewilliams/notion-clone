@@ -27,7 +27,7 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
     isEqualDifferencePartToExpectChar(currentTextContent, textContentBeforeCurrent, "`") > 0;
   const isBacktickExist = textContentBeforeCurrent.includes("`");
   if (isBacktickInput && isBacktickExist) {
-    return inlineCodeTransaction(state) ?? tr;
+    return inlineCodeTransaction(state, tr) ?? tr;
   }
 
   return tr;
