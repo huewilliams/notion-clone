@@ -1,4 +1,4 @@
-import {EditorState, Transaction} from "prosemirror-state";
+import {EditorState, TextSelection, Transaction} from "prosemirror-state";
 import {schema} from "../model/schema";
 
 export function inlineCodeTransaction(state: EditorState): Transaction | null {
@@ -16,8 +16,10 @@ export function inlineCodeTransaction(state: EditorState): Transaction | null {
   if (targetText.length < 1) return null;
 
   const startPos = tr.selection.$anchor.start();
-  tr.replaceWith(startPos + backtickOffset, currentPos, schema.text(targetText));
-  tr.addMark(startPos + backtickOffset, currentPos, schema.marks.inlineCode.create());
+  tr.replaceWith(startPos + backtickOffset, currentPos + 1, schema.text(targetText));
+  tr.addMark(startPos + backtickOffset, currentPos - 1, schema.marks.inlineCode.create());
   tr.removeStoredMark(schema.marks.inlineCode);
+  tr.setSelection(new TextSelection(tr.doc.resolve(currentPos - 1)));
+
   return tr;
 }
