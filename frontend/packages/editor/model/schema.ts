@@ -25,7 +25,7 @@ export const schema = new Schema({
     divider: {
       group: 'test',
       selectable: false,
-      toDOM() { return ['div', ['hr']] }
+      toDOM() { return ['div', {class: "editor-divider"}, ['hr']] }
     },
     text: {
       group: 'inline'

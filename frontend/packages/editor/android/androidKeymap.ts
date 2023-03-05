@@ -3,6 +3,7 @@ import {headerTransaction} from "../transactions/headerTransaction";
 import {blockquoteTransaction} from "../transactions/blockquoteTransaction";
 import {inlineCodeTransaction} from "../transactions/inlineCodeTransaction";
 import {isEqualDifferencePartToExpectChar} from "../utils/isEqualDifferencePartToExpectChar";
+import {dividerTransaction} from "../transactions/dividerTransaction";
 
 export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
   const prevTextContent = state.selection.$head.parent.textContent;
@@ -28,6 +29,13 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
   const isBacktickExist = textContentBeforeCurrent.includes("`");
   if (isBacktickInput && isBacktickExist) {
     return inlineCodeTransaction(state, tr) ?? tr;
+  }
+
+  const isDashInput =
+    isEqualDifferencePartToExpectChar(currentTextContent, textContentBeforeCurrent, "-") > 0;
+  const isDoubleDashExist = prevTextContent === "--";
+  if (isDashInput && isDoubleDashExist) {
+    return dividerTransaction(tr) ?? tr;
   }
 
   return tr;

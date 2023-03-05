@@ -16,3 +16,13 @@
   background-color: #E2E2E2;
   border-radius: 4px;
 }
+
+.editor-divider {
+  padding: 5px 0;
+}
+
+.editor-divider hr {
+  height: 1px;
+  background-color: #E2E2E2;
+  border: none;
+}
