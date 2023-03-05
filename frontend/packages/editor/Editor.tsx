@@ -8,7 +8,7 @@ import {css} from "@emotion/react";
 import {schema} from "./model/schema";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {spaceCommand} from "./commands/spaceCommand";
-import {wrapTransaction} from "./android/wrapTransaction";
+import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand} from "./commands/backspaceCommand";
 import {backtickCommand} from "./commands/backtickCommand";
 import "./Editor.css";
@@ -35,7 +35,7 @@ export function Editor({placeholder}: Props) {
     const view = new EditorView(editorRef.current, {
       state,
       dispatchTransaction: tr => {
-        const newTr = wrapTransaction(tr, view.state);
+        const newTr = androidKeymap(tr, view.state);
         newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);

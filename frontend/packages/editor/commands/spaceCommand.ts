@@ -1,5 +1,6 @@
 import {Command, TextSelection} from "prosemirror-state";
 import {schema} from "../model/schema";
+import {headerTransaction} from "../transactions/headerTransaction";
 
 export const spaceCommand: Command = (state, dispatch) => {
   if (!dispatch) return false;
@@ -13,14 +14,10 @@ export const spaceCommand: Command = (state, dispatch) => {
   const to = state.selection.$head.pos;
 
   if (isHeadingCommand) {
-    const header = schema.nodes.heading.createAndFill({level: prevTextContent.length});
-    if (!header) return false;
+    const tr = headerTransaction(state, prevTextContent.length);
+    if (!tr) return false;
 
-    const tr = state.tr;
-    tr.replaceWith(from - 1, to, header);
-    tr.setSelection(new TextSelection(tr.doc.resolve(from - 1), tr.doc.resolve(from - 1)));
     dispatch(tr);
-
     return true;
   }
 
