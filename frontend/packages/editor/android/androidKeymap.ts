@@ -1,6 +1,8 @@
 import {EditorState, Transaction} from "prosemirror-state";
 import {headerTransaction} from "../transactions/headerTransaction";
 import {blockquoteTransaction} from "../transactions/blockquoteTransaction";
+import {inlineCodeTransaction} from "../transactions/inlineCodeTransaction";
+import {isEqualDifferencePartToExpectChar} from "../utils/isEqualDifferencePartToExpectChar";
 
 export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
   const prevTextContent = state.selection.$head.parent.textContent;
@@ -10,14 +12,22 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
   const isWhiteSpaceContent = lastText && /\s/g.test(lastText);
   const isSpace = isWhiteSpaceContent && currentTextContent.length > prevTextContent.length;
   const isHeadingCommand = prevTextContent.length > 0 && prevTextContent.split('').every(c => c === "#");
-  const isBlockquoteCommand = prevTextContent === '"';
-
   if (isSpace && isHeadingCommand) {
     return headerTransaction(state, prevTextContent.length) ?? tr;
   }
 
+  const isBlockquoteCommand = prevTextContent === '"';
   if (isSpace && isBlockquoteCommand) {
     return blockquoteTransaction(state, prevTextContent.length) ?? tr;
+  }
+
+  const currentPos = tr.selection.$anchor.pos;
+  const textContentBeforeCurrent = prevTextContent.slice(0, currentPos - 1);
+  const isBacktickInput =
+    isEqualDifferencePartToExpectChar(currentTextContent, textContentBeforeCurrent, "`") > 0;
+  const isBacktickExist = textContentBeforeCurrent.includes("`");
+  if (isBacktickInput && isBacktickExist) {
+    return inlineCodeTransaction(state) ?? tr;
   }
 
   return tr;
