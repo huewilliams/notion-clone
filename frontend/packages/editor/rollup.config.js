@@ -1,5 +1,5 @@
+import postcss from "rollup-plugin-postcss";
 import babel from "@rollup/plugin-babel";
-import css from "rollup-plugin-import-css";
 import typescript from "@rollup/plugin-typescript";
 
 export default {
@@ -10,6 +10,9 @@ export default {
     sourcemap: true,
   },
   plugins: [
+    postcss({
+      extensions: [".css"]
+    }),
     babel({
       babelHelpers: "bundled",
       presets: [
@@ -19,7 +22,6 @@ export default {
       ],
       extensions: [".js", ".jsx", ".ts", ".tsx"]
     }),
-    css(),
     typescript()
   ]
 };

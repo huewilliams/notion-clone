@@ -4,7 +4,6 @@ import {EditorState} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
 import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
-import {css} from "@emotion/react";
 import {schema} from "./model/schema";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {spaceCommand} from "./commands/spaceCommand";
@@ -45,12 +44,6 @@ export function Editor({placeholder}: Props) {
   }, [state]);
 
   return (
-    <div spellCheck={false} css={divStyle} ref={editorRef}/>
+    <div spellCheck={false} ref={editorRef}/>
   )
 }
-
-const divStyle = css`
-  div {
-    outline: none;
-  }
-`;

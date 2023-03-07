@@ -1,3 +1,7 @@
+.ProseMirror-focused {
+  outline: none;
+}
+
 .empty-node::before {
   content: attr(data-placeholder);
   color: #B4B4B4;
