@@ -4,6 +4,9 @@
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@src/*": ["src/*"]
+    }
   }
 }
