@@ -1,5 +1,5 @@
 import {Transaction} from "prosemirror-state";
-import {schema} from "../model/schema";
+import {schema} from "@src/model";
 
 export function dividerTransaction(tr: Transaction): Transaction | null {
   const divider = schema.nodes.divider.createAndFill();

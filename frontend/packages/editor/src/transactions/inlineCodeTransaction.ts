@@ -1,5 +1,5 @@
 import {EditorState, TextSelection, Transaction} from "prosemirror-state";
-import {schema} from "../model/schema";
+import {schema} from "@src/model";
 import {isEqualDifferencePartToExpectChar} from "../utils/isEqualDifferencePartToExpectChar";
 
 export function inlineCodeTransaction(state: EditorState, tr: Transaction): Transaction | null {

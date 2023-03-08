@@ -1,5 +1,5 @@
 import {Command} from "prosemirror-state";
-import {schema} from "../model/schema";
+import {schema} from "@src/model";
 
 export const backspaceCommand: Command = (state, dispatch) => {
   const isEmptyContent = state.selection.$head.parent.textContent.length < 1;

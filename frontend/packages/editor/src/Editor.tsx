@@ -4,7 +4,7 @@ import {EditorState} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
 import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
-import {schema} from "./model/schema";
+import {schema} from "@src/model";
 import PlaceholderPlugin from "./plugins/placeholderPlugin";
 import {spaceCommand} from "./commands/spaceCommand";
 import {androidKeymap} from "./android/androidKeymap";

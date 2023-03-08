@@ -1,5 +1,5 @@
 import {EditorState, TextSelection, Transaction} from "prosemirror-state";
-import {schema} from "../model/schema";
+import {schema} from "@src/model";
 
 export function blockquoteTransaction(state: EditorState, prevTextLength: number): Transaction | null {
   const blockquote = schema.nodes.blockquote.createAndFill();

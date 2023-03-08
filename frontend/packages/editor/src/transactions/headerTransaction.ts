@@ -1,5 +1,5 @@
 import {EditorState, TextSelection, Transaction} from "prosemirror-state";
-import {schema} from "../model/schema";
+import {schema} from "@src/model";
 
 export function headerTransaction(state: EditorState, prevTextLength: number): Transaction | null {
   const header = schema.nodes.heading.createAndFill({level: prevTextLength});
