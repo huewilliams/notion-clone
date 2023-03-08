@@ -1,6 +1,6 @@
 import {EditorState, TextSelection, Transaction} from "prosemirror-state";
 import {schema} from "@src/model";
-import {isEqualDifferencePartToExpectChar} from "../utils/isEqualDifferencePartToExpectChar";
+import {isEqualDifferencePartToExpectChar} from "@src/utils";
 
 export function inlineCodeTransaction(state: EditorState, tr: Transaction): Transaction | null {
   const prevTextContent = state.selection.$head.parent.textContent;
