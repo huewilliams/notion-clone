@@ -1,6 +1,5 @@
 import {Command} from "prosemirror-state";
-import {headerTransaction} from "../transactions/headerTransaction";
-import {blockquoteTransaction} from "../transactions/blockquoteTransaction";
+import {headerTransaction, blockquoteTransaction} from "@src/transactions";
 
 export const spaceCommand: Command = (state, dispatch) => {
   if (!dispatch) return false;

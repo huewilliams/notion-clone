@@ -1,9 +1,6 @@
 import {EditorState, Transaction} from "prosemirror-state";
 import {isEqualDifferencePartToExpectChar} from "@src/utils";
-import {headerTransaction} from "../transactions/headerTransaction";
-import {blockquoteTransaction} from "../transactions/blockquoteTransaction";
-import {inlineCodeTransaction} from "../transactions/inlineCodeTransaction";
-import {dividerTransaction} from "../transactions/dividerTransaction";
+import {headerTransaction, blockquoteTransaction, inlineCodeTransaction, dividerTransaction} from "@src/transactions";
 
 export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
   const prevTextContent = state.selection.$head.parent.textContent;
