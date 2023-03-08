@@ -2,7 +2,7 @@ import {Plugin} from "prosemirror-state";
 import {Decoration, DecorationSet} from "prosemirror-view";
 import {Node} from "prosemirror-model";
 
-export default function placeholderPlugin(placeholder?: string) {
+export function placeholderPlugin(placeholder?: string) {
   return new Plugin({
     props: {
       decorations: state => {
