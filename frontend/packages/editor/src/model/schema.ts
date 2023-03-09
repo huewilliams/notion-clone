@@ -30,10 +30,16 @@ export const schema = new Schema({
     text: {
       group: 'inline'
     },
+    link: {
+      attrs: {href: {default: ''}},
+      inline: true,
+      group: 'inline',
+      toDOM(node) { return ['a', {class: "editor-link", href: node.attrs.href}]}
+    },
   },
   marks: {
     inlineCode: {
       toDOM() {return ["code", {class: "editor-inlineCode"}]}
-    }
+    },
   }
 });
