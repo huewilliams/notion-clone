@@ -6,7 +6,6 @@ import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
 import {schema} from "@src/model";
 import {placeholderPlugin} from "@src/plugins";
-import {spaceCommand} from "./commands/spaceCommand";
 import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand} from "./commands/backspaceCommand";
 import "./Editor.css";
@@ -22,7 +21,6 @@ export function Editor({placeholder}: Props) {
     schema,
     plugins: [
       keymap(baseKeymap),
-      keymap({" ": spaceCommand}),
       keymap({"Backspace": backspaceCommand}),
       placeholderPlugin(placeholder),
     ]

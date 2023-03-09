@@ -5,7 +5,6 @@ import {isEqualDifferencePartToExpectChar} from "@src/utils";
 export function inlineCodeTransaction(state: EditorState, tr: Transaction): Transaction | null {
   const prevTextContent = state.selection.$head.parent.textContent;
   const currentTextContent = tr.selection.$head.parent.textContent;
-  const currentPos = tr.selection.$anchor.pos;
   const currentBacktickOffset = isEqualDifferencePartToExpectChar(currentTextContent, prevTextContent, "`");
 
   const textContentBeforeCurrent = prevTextContent.slice(0, currentBacktickOffset);
@@ -17,6 +16,7 @@ export function inlineCodeTransaction(state: EditorState, tr: Transaction): Tran
   if (targetText.length < 1) return null;
 
   const startPos = tr.selection.$anchor.start();
+  const currentPos = tr.selection.$anchor.pos;
   tr.replaceWith(startPos + prevBacktickOffset, currentPos, schema.text(targetText));
   tr.addMark(startPos + prevBacktickOffset, currentPos - 2, schema.marks.inlineCode.create());
   tr.removeStoredMark(schema.marks.inlineCode);

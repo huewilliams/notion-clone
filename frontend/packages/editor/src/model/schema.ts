@@ -13,12 +13,12 @@ export const schema = new Schema({
     },
     heading: {
       attrs: {level: {default: 1}},
-      content: 'text*',
+      content: 'inline*',
       group: 'block',
       toDOM(node) { return ['h' + node.attrs.level, 0] }
     },
     blockquote: {
-      content: 'text*',
+      content: 'inline*',
       group: 'block',
       toDOM() { return ['blockquote', {class: "editor-blockquote"}, 0] }
     },
@@ -31,10 +31,12 @@ export const schema = new Schema({
       group: 'inline'
     },
     link: {
+      content: 'text*',
+      selectable: false,
       attrs: {href: {default: ''}},
       inline: true,
       group: 'inline',
-      toDOM(node) { return ['a', {class: "editor-link", href: node.attrs.href}]}
+      toDOM(node) { return ['a', {class: "editor-link", href: node.attrs.href, contentEditable: false}, 0]}
     },
   },
   marks: {

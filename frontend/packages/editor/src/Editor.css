@@ -30,3 +30,8 @@
   background-color: #E2E2E2;
   border: none;
 }
+
+.editor-link, .editor-link:visited, .editor-link:link {
+  color: gray;
+  border-bottom: 1px solid #E2E2E2;
+}
