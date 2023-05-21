@@ -7,7 +7,7 @@ import {baseKeymap} from "prosemirror-commands";
 import {schema} from "@src/model";
 import {placeholderPlugin} from "@src/plugins";
 import {androidKeymap} from "./android/androidKeymap";
-import {backspaceCommand} from "./commands/backspaceCommand";
+import {backspaceCommand, enterCommand} from "@src/commands";
 import "./Editor.css";
 
 interface Props {
@@ -20,6 +20,7 @@ export function Editor({placeholder}: Props) {
   const state = EditorState.create({
     schema,
     plugins: [
+      keymap({'Enter': enterCommand}),
       keymap(baseKeymap),
       keymap({"Backspace": backspaceCommand}),
       placeholderPlugin(placeholder),
