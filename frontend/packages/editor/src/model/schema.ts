@@ -27,6 +27,16 @@ export const schema = new Schema({
       selectable: false,
       toDOM() { return ['div', {class: "editor-divider"}, ['hr']] }
     },
+    listItem: {
+      content: 'inline*',
+      group: 'block',
+      toDOM() { return ['li', 0] }
+    },
+    bulletList: {
+      content: '(listItem | bulletList)*',
+      group: 'block',
+      toDOM() { return ['ul', {class: "editor-bulletList"}, 0] }
+    },
     text: {
       group: 'inline'
     },

@@ -35,3 +35,7 @@
   color: gray;
   border-bottom: 1px solid #E2E2E2;
 }
+
+.editor-bulletList {
+  padding-left: 20px;
+}
