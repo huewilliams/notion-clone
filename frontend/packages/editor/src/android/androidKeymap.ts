@@ -15,7 +15,10 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
 
   const isWhiteSpaceContent = lastText && /\s/g.test(lastText);
   const isLastTextSpace = isWhiteSpaceContent && currentTextContent.length > prevTextContent.length;
-  const isHeadingCommand = prevTextContent.length > 0 && prevTextContent.split('').every(c => c === "#");
+  const isHeadingCommand =
+    prevTextContent.length > 0
+    && prevTextContent.length <= 3
+    && prevTextContent.split('').every(c => c === "#");
   if (isLastTextSpace && isHeadingCommand) {
     return headerTransaction(state, prevTextContent.length) ?? tr;
   }
