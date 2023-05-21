@@ -5,7 +5,8 @@ import {
   blockquoteTransaction,
   inlineCodeTransaction,
   dividerTransaction,
-  linkTransaction
+  linkTransaction,
+  bulletListTransaction
 } from "@src/transactions";
 
 export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
@@ -26,6 +27,11 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
   const isBlockquoteCommand = prevTextContent === '"';
   if (isLastTextSpace && isBlockquoteCommand) {
     return blockquoteTransaction(state, prevTextContent.length) ?? tr;
+  }
+
+  const isBulletListCommand = prevTextContent === "*";
+  if (isLastTextSpace && isBulletListCommand) {
+    return bulletListTransaction(state) ?? tr;
   }
 
   const isSpaceInput =
