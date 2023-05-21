@@ -22,8 +22,8 @@ export function Editor({placeholder}: Props) {
     plugins: [
       keymap({'Enter': enterCommand}),
       keymap({'Tab': tabCommand}),
-      keymap(baseKeymap),
       keymap({"Backspace": backspaceCommand}),
+      keymap(baseKeymap),
       placeholderPlugin(placeholder),
     ]
   });
