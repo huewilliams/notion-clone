@@ -18,6 +18,13 @@ export const backspaceCommand: Command = (state, dispatch) => {
     return true;
   }
 
+  const isListItemType = parentType === 'listItem';
+  if (isEmptyContent && isListItemType && paragraph) {
+    const replaceTr = state.tr.replaceWith(from - 2, to, paragraph);
+    dispatch(replaceTr);
+    return true;
+  }
+
   const isDoc = parentType === 'doc';
   const afterNode = state.selection.$head.nodeAfter;
   const afterType = afterNode?.type.name;
