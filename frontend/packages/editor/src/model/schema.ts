@@ -30,11 +30,13 @@ export const schema = new Schema({
     listItem: {
       content: 'inline*',
       group: 'block',
+      parseDOM: [{tag: 'li'}],
       toDOM() { return ['li', 0] }
     },
     bulletList: {
       content: '(listItem | bulletList)*',
       group: 'block',
+      parseDOM: [{tag: 'ul'}],
       toDOM() { return ['ul', {class: "editor-bulletList"}, 0] }
     },
     text: {
