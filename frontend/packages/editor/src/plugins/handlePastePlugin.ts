@@ -9,8 +9,7 @@ export function handlePastePlugin() {
         let dispatched = false;
 
         slice.content.descendants((node) => {
-          if (node.type.name === 'text') {
-            console.log(isUrl(node.textContent))
+          if (node.type.name === 'text' && isUrl(node.textContent)) {
             let linkNode = schema.nodes.link.create({href: node.textContent}, node);
             view.dispatch(view.state.tr.replaceSelectionWith(linkNode));
             dispatched = true;
