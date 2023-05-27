@@ -1,34 +1,23 @@
 import {EditorState, Transaction} from "prosemirror-state";
-import {isEqualDifferencePartToExpectChar} from "@src/utils";
 import isUrl from "is-url";
 import {schema} from "@src/model";
 
 export function linkTransaction(state: EditorState, tr: Transaction): Transaction {
-  const prevTextContent = state.selection.$head.parent.textContent;
-  const currentTextContent = tr.selection.$head.parent.textContent;
-  console.log(prevTextContent, currentTextContent);
-  const currentSpaceOffset = isEqualDifferencePartToExpectChar(currentTextContent, prevTextContent, " ");
+  const beforeNode = state.tr.selection.$head.nodeBefore;
+  if (beforeNode?.type.name !== 'text') return tr;
 
-  const textContentBeforeCurrent = currentTextContent.slice(0, currentSpaceOffset);
-  if (textContentBeforeCurrent.length < 1) return tr;
-  const lastSpaceIndex = textContentBeforeCurrent.lastIndexOf(" ");
-  console.log('currentSpaceOffset : ', currentSpaceOffset, 'lastSpaceIndex : ', lastSpaceIndex);
-  const lastSpaceOffset = lastSpaceIndex < 0 ? 0 : lastSpaceIndex + 1;
-  let targetText = textContentBeforeCurrent.slice(lastSpaceOffset);
+  const nodeText = (beforeNode.text ?? "").split(" ");
+  const lastWord = nodeText[nodeText.length - 1];
+  const wordHasScheme = lastWord.includes(':');
+  const linkText = wordHasScheme ? lastWord : 'https://' + lastWord;
+  const textIsUrl = isUrl(linkText);
 
-  const targetHasScheme = targetText.includes("://");
-  if (!targetHasScheme) targetText = "https://" + targetText;
-  const targetIsUrl = isUrl(targetText);
-  if (!targetIsUrl) return tr;
-
-  console.log('url!')
-  const textNode = schema.text(targetText);
-  const linkNode = schema.nodes.link.createAndFill({href: targetText}, textNode);
-  const startPos = tr.selection.$anchor.start() + lastSpaceOffset;
-  const endPos = tr.selection.$anchor.start() + currentSpaceOffset;
-  console.log('startPos : ', startPos, ' endPos : ', endPos)
-  if (!linkNode) return tr;
-  tr.replaceWith(startPos, endPos, linkNode);
+  if (textIsUrl) {
+    const startPos = state.tr.selection.$head.pos - lastWord.length;
+    const endPos = state.tr.selection.$head.pos;
+    const linkNode = schema.nodes.link.create({href: linkText}, schema.text(linkText));
+    tr.replaceWith(startPos, endPos, linkNode);
+  }
 
   return tr;
 }
