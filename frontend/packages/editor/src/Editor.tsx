@@ -37,6 +37,7 @@ export function Editor({placeholder}: Props) {
         newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
+        location.hash = btoa(JSON.stringify(newState.toJSON()));
       },
     });
     return () => {
