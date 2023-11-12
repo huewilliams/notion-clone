@@ -38,7 +38,7 @@ const Header = styled.h1`
   font-weight: 600;
   
   @media (max-width: 520px) {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 `;
 
