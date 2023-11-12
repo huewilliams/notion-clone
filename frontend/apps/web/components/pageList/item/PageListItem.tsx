@@ -29,6 +29,7 @@ const Wrapper = styled.div`
   border: 1px solid #B4B4B4;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 1.5rem;
   
   &:hover {
     background: #EBEBEB;

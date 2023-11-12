@@ -11,7 +11,9 @@ export default function Page() {
       <Wrapper>
         <Emoji>📄</Emoji>
         <Title>Initial Page</Title>
-        <Editor placeholder={"Input Anything!"}/>
+        <EditorWrapper>
+          <Editor placeholder={"Input Anything!"}/>
+        </EditorWrapper>
       </Wrapper>
     </>
   )
@@ -37,6 +39,10 @@ const Emoji = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 56px;
+  font-size: 5rem;
   font-weight: 600;
+`;
+
+const EditorWrapper = styled.div`
+  font-size: 1.5rem;
 `;
