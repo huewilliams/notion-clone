@@ -35,9 +35,21 @@ export const tabCommand: Command = (state, dispatch) => {
   const range = state.selection.$head.blockRange();
   const currentType = state.selection.$head.node().type.name;
   const isListType = currentType === 'listItem';
-  const bulletedList = schema.nodes.bulletList.createAndFill(null);
-  if (isListType && bulletedList && range) {
-    const wrapTr = state.tr.wrap(range, [bulletedList]);
+
+  const bulletList = schema.nodes.bulletList.createAndFill(null);
+  const isParentBulletedList = parentNode.type.name === 'bulletList';
+
+  const numberList = schema.nodes.numberList.createAndFill(null);
+  const isParentNumberedList = parentNode.type.name === 'numberList';
+
+  if (isListType && isParentBulletedList && bulletList && range) {
+    const wrapTr = state.tr.wrap(range, [bulletList]);
+    dispatch(wrapTr);
+    return true;
+  }
+
+  if (isListType && isParentNumberedList && numberList && range) {
+    const wrapTr = state.tr.wrap(range, [numberList]);
     dispatch(wrapTr);
     return true;
   }
