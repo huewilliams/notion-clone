@@ -6,7 +6,8 @@ import {
   inlineCodeTransaction,
   dividerTransaction,
   linkTransaction,
-  bulletListTransaction
+  bulletListTransaction,
+  numberListTransaction
 } from "@src/transactions";
 
 export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
@@ -32,6 +33,13 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
   const isBulletListCommand = prevTextContent === "*";
   if (isLastTextSpace && isBulletListCommand) {
     return bulletListTransaction(state) ?? tr;
+  }
+
+  const numberListRegEx = /[0-9]\.$/;
+  const isNumberListCommand = numberListRegEx.test(prevTextContent);
+  if (isLastTextSpace && isNumberListCommand) {
+    const frontNumber = prevTextContent.split('.')[0];
+    return numberListTransaction(state, frontNumber) ?? tr;
   }
 
   const isSpaceInput =
