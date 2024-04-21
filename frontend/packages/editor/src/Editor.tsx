@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, {forwardRef, useEffect, useRef, useState} from "react";
-import {EditorState} from "prosemirror-state";
+import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from "react";
+import {EditorState, Transaction} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
 import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
@@ -16,7 +16,11 @@ interface Props {
   placeholder?: string;
 }
 
-export const Editor = forwardRef<HTMLDivElement, Props>(({placeholder}, ref) => {
+export interface EditorRef {
+  insertDivide: () => void;
+}
+
+export const Editor = forwardRef<EditorRef, Props>(({placeholder}, ref) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const plugins = [
     keymap({'Enter': enterCommand}),
@@ -33,6 +37,7 @@ export const Editor = forwardRef<HTMLDivElement, Props>(({placeholder}, ref) => 
       plugins,
     })
   );
+  const [newState, setNewState] = useState<EditorState | null>(null);
   const [innerView, setInnerView] = useState<EditorView | null>(null);
 
   useEffect(() => {
@@ -40,7 +45,7 @@ export const Editor = forwardRef<HTMLDivElement, Props>(({placeholder}, ref) => 
       state,
       dispatchTransaction: tr => {
         const newTr = androidKeymap(tr, view.state);
-        newTr.removeStoredMark(schema.marks.inlineCode);
+        // newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
         location.hash = utf8ToBase64(JSON.stringify(newState.toJSON()));
@@ -54,20 +59,32 @@ export const Editor = forwardRef<HTMLDivElement, Props>(({placeholder}, ref) => 
   }, [state]);
 
   useEffect(() => {
-    const dividerTr = dividerTransaction(state.tr);
-    if (dividerTr) {
-      const newState = state.apply(dividerTr);
-      innerView?.updateState(newState);
-    }
-  })
-
-  useEffect(() => {
     if (location.hash.length > 1) {
       const decodedState = base64ToUtf8(location.hash.substring(1));
       const stateFromHash = JSON.parse(decodedState);
       setState(EditorState.fromJSON({schema, plugins}, stateFromHash));
     }
   }, []);
+
+  const applyTransaction = useCallback((tr: Transaction | null) => {
+    if (!tr || !innerView) return;
+    setNewState(innerView.state.apply(tr));
+  }, [innerView]);
+
+  useImperativeHandle(ref, () => {
+    return {
+      insertDivide: () => {
+        if (!innerView) return;
+        applyTransaction(dividerTransaction(innerView.state.tr));
+      }
+    }
+  }, [applyTransaction, innerView]);
+
+  useEffect(() => {
+    if (newState) {
+      innerView?.updateState(newState);
+    }
+  }, [innerView, newState]);
 
   return (
     <div spellCheck={false} ref={editorRef}/>

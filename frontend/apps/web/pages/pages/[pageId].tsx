@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
-import {Editor} from "editor";
+import {Editor, EditorRef} from "editor";
+import {useRef} from "react";
 
 export default function Page() {
+  const ref = useRef<EditorRef | null>(null);
+
   return (
     <>
       <Banner>
@@ -10,9 +13,11 @@ export default function Page() {
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
-        <Title>Initial Page</Title>
+        <Title onClick={() => {
+          ref.current?.insertDivide()
+        }}>Initial Page</Title>
         <EditorWrapper>
-          <Editor placeholder={"Input Anything!"}/>
+          <Editor placeholder={"Input Anything!"} ref={ref}/>
         </EditorWrapper>
       </Wrapper>
     </>
