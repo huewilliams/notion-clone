@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {useEffect, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
 import {EditorState} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
 import {keymap} from "prosemirror-keymap";
@@ -10,12 +10,13 @@ import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand, enterCommand, tabCommand} from "@src/commands";
 import {base64ToUtf8, utf8ToBase64} from "@src/utils";
 import "./Editor.css";
+import {dividerTransaction} from "@src/transactions";
 
 interface Props {
   placeholder?: string;
 }
 
-export function Editor({placeholder}: Props) {
+export const Editor = forwardRef<HTMLDivElement, Props>(({placeholder}, ref) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const plugins = [
     keymap({'Enter': enterCommand}),
@@ -32,14 +33,7 @@ export function Editor({placeholder}: Props) {
       plugins,
     })
   );
-
-  useEffect(() => {
-    if (location.hash.length > 1) {
-      const decodedState = base64ToUtf8(location.hash.substring(1));
-      const stateFromHash = JSON.parse(decodedState);
-      setState(EditorState.fromJSON({schema, plugins}, stateFromHash));
-    }
-  }, []);
+  const [innerView, setInnerView] = useState<EditorView | null>(null);
 
   useEffect(() => {
     const view = new EditorView(editorRef.current, {
@@ -52,12 +46,32 @@ export function Editor({placeholder}: Props) {
         location.hash = utf8ToBase64(JSON.stringify(newState.toJSON()));
       },
     });
+    setInnerView(view);
+
     return () => {
       view.destroy();
     }
   }, [state]);
 
+  useEffect(() => {
+    const dividerTr = dividerTransaction(state.tr);
+    if (dividerTr) {
+      const newState = state.apply(dividerTr);
+      innerView?.updateState(newState);
+    }
+  })
+
+  useEffect(() => {
+    if (location.hash.length > 1) {
+      const decodedState = base64ToUtf8(location.hash.substring(1));
+      const stateFromHash = JSON.parse(decodedState);
+      setState(EditorState.fromJSON({schema, plugins}, stateFromHash));
+    }
+  }, []);
+
   return (
     <div spellCheck={false} ref={editorRef}/>
   )
-}
+});
+
+Editor.displayName = 'Editor';
