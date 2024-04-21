@@ -1,1 +1,1 @@
-export {Editor, EditorRef} from "./Editor";
+export {Editor, EditorRef, InsertNodeCommand} from "./Editor";

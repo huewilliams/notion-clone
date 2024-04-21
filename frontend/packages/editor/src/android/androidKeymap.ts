@@ -10,7 +10,9 @@ import {
   numberListTransaction
 } from "@src/transactions";
 
-export function androidKeymap(tr: Transaction, state: EditorState): Transaction {
+export function androidKeymap(
+  tr: Transaction, state: EditorState, slashCommand?: (isSingle: boolean) => void
+): Transaction {
   const prevTextContent = state.selection.$head.parent.textContent;
   const currentTextContent = tr.selection.$head.parent.textContent;
   const lastText = currentTextContent.length > 0 ? currentTextContent[currentTextContent.length - 1] : null;
@@ -62,6 +64,13 @@ export function androidKeymap(tr: Transaction, state: EditorState): Transaction 
   const isDoubleDashExist = prevTextContent === "--";
   if (isDashInput && isDoubleDashExist) {
     return dividerTransaction(tr) ?? tr;
+  }
+
+  const isSlashInput = lastText === "/";
+  const isSingle = currentTextContent === "/";
+  const isInsert = prevTextContent < currentTextContent;
+  if (isSlashInput && slashCommand && isInsert) {
+    slashCommand(isSingle);
   }
 
   return tr;

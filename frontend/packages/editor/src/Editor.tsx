@@ -10,17 +10,20 @@ import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand, enterCommand, tabCommand} from "@src/commands";
 import {base64ToUtf8, utf8ToBase64} from "@src/utils";
 import "./Editor.css";
-import {dividerTransaction} from "@src/transactions";
+import {bulletListTransaction, dividerTransaction, headerTransaction, numberListTransaction} from "@src/transactions";
 
 interface Props {
   placeholder?: string;
+  slashCommand?: (isSingle: boolean) => void;
 }
+
+export type InsertNodeCommand = 'divider' | 'bulletedList' | 'numberedList' | 'h1' | 'h2' | 'h3';
 
 export interface EditorRef {
-  insertDivide: () => void;
+  insertNode: (command: InsertNodeCommand) => void;
 }
 
-export const Editor = forwardRef<EditorRef, Props>(({placeholder}, ref) => {
+export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand}, ref) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const plugins = [
     keymap({'Enter': enterCommand}),
@@ -44,8 +47,8 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder}, ref) => {
     const view = new EditorView(editorRef.current, {
       state,
       dispatchTransaction: tr => {
-        const newTr = androidKeymap(tr, view.state);
-        // newTr.removeStoredMark(schema.marks.inlineCode);
+        const newTr = androidKeymap(tr, view.state, slashCommand);
+        newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
         location.hash = utf8ToBase64(JSON.stringify(newState.toJSON()));
@@ -56,7 +59,7 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder}, ref) => {
     return () => {
       view.destroy();
     }
-  }, [state]);
+  }, [slashCommand, state]);
 
   useEffect(() => {
     if (location.hash.length > 1) {
@@ -68,14 +71,34 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder}, ref) => {
 
   const applyTransaction = useCallback((tr: Transaction | null) => {
     if (!tr || !innerView) return;
+    innerView.focus();
     setNewState(innerView.state.apply(tr));
   }, [innerView]);
 
   useImperativeHandle(ref, () => {
     return {
-      insertDivide: () => {
+      insertNode: (command: InsertNodeCommand) => {
         if (!innerView) return;
-        applyTransaction(dividerTransaction(innerView.state.tr));
+        switch (command) {
+          case "divider":
+            applyTransaction(dividerTransaction(innerView.state.tr));
+            break;
+          case "bulletedList":
+            applyTransaction(bulletListTransaction(innerView.state));
+            break;
+          case "numberedList":
+            applyTransaction(numberListTransaction(innerView.state, '1'));
+            break;
+          case "h1":
+            applyTransaction(headerTransaction(innerView.state, 1));
+            break;
+          case "h2":
+            applyTransaction(headerTransaction(innerView.state, 2));
+            break;
+          case "h3":
+            applyTransaction(headerTransaction(innerView.state, 3));
+            break;
+        }
       }
     }
   }, [applyTransaction, innerView]);

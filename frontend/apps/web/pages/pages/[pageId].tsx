@@ -2,9 +2,12 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import {Editor, EditorRef} from "editor";
 import {useRef} from "react";
+import {SlashCommands} from "../../components";
+import {useSlashCommand} from "../../hooks";
 
 export default function Page() {
   const ref = useRef<EditorRef | null>(null);
+  const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
 
   return (
     <>
@@ -13,13 +16,22 @@ export default function Page() {
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
-        <Title onClick={() => {
-          ref.current?.insertDivide()
-        }}>Initial Page</Title>
+        <Title>Initial Page</Title>
         <EditorWrapper>
-          <Editor placeholder={"Input Anything!"} ref={ref}/>
+          <Editor
+            placeholder={"Input Anything!"}
+            ref={ref}
+            slashCommand={handleSlashCommand}
+          />
         </EditorWrapper>
       </Wrapper>
+      <SlashCommands
+        show={showSlashCommands}
+        rect={rect}
+        isSingle={isSingle}
+        insertNodeCommand={ref.current?.insertNode}
+        close={() => setShowSlashCommands(false)}
+      />
     </>
   )
 }
