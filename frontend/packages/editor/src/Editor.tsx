@@ -21,6 +21,7 @@ export type InsertNodeCommand = 'divider' | 'bulletedList' | 'numberedList' | 'h
 
 export interface EditorRef {
   insertNode: (command: InsertNodeCommand) => void;
+  getData: () => any;
 }
 
 export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand}, ref) => {
@@ -99,6 +100,9 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand},
             applyTransaction(headerTransaction(innerView.state, 3));
             break;
         }
+      },
+      getData: () => {
+        return innerView?.state.toJSON();
       }
     }
   }, [applyTransaction, innerView]);
