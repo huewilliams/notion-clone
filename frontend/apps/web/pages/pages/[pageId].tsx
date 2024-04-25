@@ -1,13 +1,24 @@
 import styled from "@emotion/styled";
+import {useRouter} from "next/router";
 import Image from "next/image";
-import {Editor, EditorRef} from "editor";
 import {useRef} from "react";
+import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
+import {saveDocument} from "../../firebase/collections/documentCollection";
 
 export default function Page() {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
+  const router = useRouter();
+
+  const handleSaveDocument = () => {
+    saveDocument({
+      id: router.query.pageId as string,
+      title: 'Initial Page',
+      data: ref.current?.getData() ?? {}
+    });
+  }
 
   return (
     <>
@@ -16,6 +27,7 @@ export default function Page() {
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
+        <Button onClick={handleSaveDocument}>save</Button>
         <Title>Initial Page</Title>
         <EditorWrapper>
           <Editor
@@ -62,4 +74,8 @@ const Title = styled.h1`
 
 const EditorWrapper = styled.div`
   font-size: 1.5rem;
+`;
+
+const Button = styled.button`
+  outline: none;
 `;

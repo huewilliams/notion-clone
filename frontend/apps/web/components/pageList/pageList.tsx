@@ -5,9 +5,9 @@ import {PageListItem} from "../index";
 export default function PageList() {
   return (
     <Wrapper>
-      <PageListItem page={{title: 'Initial Page', id: '1'}}/>
-      <PageListItem page={{title: 'Initial Page', id: '2'}}/>
-      <PageListItem page={{title: 'Initial Page', id: '3'}}/>
+      <PageListItem page={{title: 'Initial Page', id: 'SPg2ZIn177qkfS_LYW4hM'}}/>
+      <PageListItem page={{title: 'Initial Page', id: '9j7qDzvD1Oun3dRseB-a1'}}/>
+      <PageListItem page={{title: 'Initial Page', id: 'eEQ98eX6s8Qs6j90XGV3j'}}/>
       <CreateNewPageButton>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
