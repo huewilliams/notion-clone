@@ -15,5 +15,6 @@
     "dev": {
       "cache": false
     }
-  }
+  },
+  "globalEnv": ["NEXT_PUBLIC_API_URL"]
 }
