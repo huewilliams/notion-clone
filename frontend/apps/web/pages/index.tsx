@@ -1,8 +1,18 @@
 import styled from "@emotion/styled";
-import {PageList} from "../components";
 import Image from "next/image";
+import axios from "axios";
+import {DocumentCollection} from "../firebase/collections/documentCollection";
+import {PageList} from "../components";
 
-export default function List() {
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+interface Props {
+  documents: DocumentCollection[];
+}
+
+export default function List(props: Props) {
+  const {documents} = props;
+
   return (
     <>
       <Banner>
@@ -17,10 +27,20 @@ export default function List() {
         <Header>📓 Notion Clone</Header>
         <CreateNewPageButton>create new page</CreateNewPageButton>
         <HorizontalDivider/>
-        <PageList/>
+        {documents ? <PageList documents={documents}/> : null}
       </ListWrapper>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await axios.get<{data: DocumentCollection[]}>('/documents');
+
+  return {
+    props: {
+      documents: res.data
+    }
+  }
 }
 
 const Banner = styled.div`

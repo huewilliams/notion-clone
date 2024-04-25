@@ -1,13 +1,18 @@
 import styled from "@emotion/styled";
 import {PlusSvg} from "../../assets/svgs";
 import {PageListItem} from "../index";
+import {DocumentCollection} from "../../firebase/collections/documentCollection";
 
-export default function PageList() {
+interface Props {
+  documents: DocumentCollection[];
+}
+
+export default function PageList({documents}: Props) {
   return (
     <Wrapper>
-      <PageListItem page={{title: 'Initial Page', id: 'SPg2ZIn177qkfS_LYW4hM'}}/>
-      <PageListItem page={{title: 'Initial Page', id: '9j7qDzvD1Oun3dRseB-a1'}}/>
-      <PageListItem page={{title: 'Initial Page', id: 'eEQ98eX6s8Qs6j90XGV3j'}}/>
+      {documents.map(document => (
+        <PageListItem page={{title: document.title, id: document.id}}/>
+      ))}
       <CreateNewPageButton>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
