@@ -18,7 +18,15 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let notionCloneFirestore;
+if (firebaseConfig?.projectId) {
+    const app = initializeApp(firebaseConfig);
 
-export const notionCloneFirestore = getFirestore(app);
+    if (app.name && typeof window !== 'undefined') {
+        const analytics = getAnalytics(app);
+    }
+
+    notionCloneFirestore = getFirestore(app);
+}
+
+export {notionCloneFirestore};
