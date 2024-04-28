@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import {GetServerSideProps} from "next";
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
@@ -20,12 +20,16 @@ export default function Page({data}: Props) {
   const router = useRouter();
   const {title, setTitle} = useDocumentStore((state) => state);
 
-  const handleSaveDocument = () => {
+  const handleDocumentSave = () => {
     saveDocument({
       id: router.query.pageId as string,
       title: title,
       data: ref.current?.getData() ?? {}
     });
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
   }
 
   useEffect(() => {
@@ -39,8 +43,8 @@ export default function Page({data}: Props) {
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
-        <Button onClick={handleSaveDocument}>save</Button>
-        <Title placeholder={"Untitled"}>{data?.title}</Title>
+        <Button onClick={handleDocumentSave}>save</Button>
+        <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
         <EditorWrapper>
           <Editor
             placeholder={"Input Anything!"}
@@ -91,9 +95,11 @@ const Emoji = styled.div`
   font-size: 56px;
 `;
 
-const Title = styled.h1`
+const Title = styled.input`
   font-size: 5rem;
   font-weight: 600;
+  outline: none;
+  border: none;
 `;
 
 const EditorWrapper = styled.div`
