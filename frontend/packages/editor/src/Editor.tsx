@@ -8,7 +8,6 @@ import {schema} from "@src/model";
 import {handlePastePlugin, placeholderPlugin} from "@src/plugins";
 import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand, enterCommand, tabCommand} from "@src/commands";
-import {base64ToUtf8, utf8ToBase64} from "@src/utils";
 import "./Editor.css";
 import {bulletListTransaction, dividerTransaction, headerTransaction, numberListTransaction} from "@src/transactions";
 
@@ -56,7 +55,6 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
         newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
-        location.hash = utf8ToBase64(JSON.stringify(newState.toJSON()));
       },
     });
     setInnerView(view);
@@ -65,14 +63,6 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
       view.destroy();
     }
   }, [defaultState, slashCommand, state]);
-
-  useEffect(() => {
-    if (location.hash.length > 1) {
-      const decodedState = base64ToUtf8(location.hash.substring(1));
-      const stateFromHash = JSON.parse(decodedState);
-      setState(EditorState.fromJSON({schema, plugins}, stateFromHash));
-    }
-  }, []);
 
   const applyTransaction = useCallback((tr: Transaction | null) => {
     if (!tr || !innerView) return;
