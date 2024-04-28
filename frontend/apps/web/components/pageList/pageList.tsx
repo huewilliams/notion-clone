@@ -5,15 +5,16 @@ import {DocumentCollection} from "../../firebase/collections/documentCollection"
 
 interface Props {
   documents: DocumentCollection[];
+  onCreateNewPage: () => void;
 }
 
-export default function PageList({documents}: Props) {
+export default function PageList({documents, onCreateNewPage}: Props) {
   return (
     <Wrapper>
       {documents.map(document => (
         <PageListItem page={{title: document.title, id: document.id}}/>
       ))}
-      <CreateNewPageButton>
+      <CreateNewPageButton onClick={onCreateNewPage}>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
       </CreateNewPageButton>

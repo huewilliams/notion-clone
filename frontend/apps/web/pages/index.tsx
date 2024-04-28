@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import axios from "axios";
+import {useCallback} from "react";
 import {DocumentCollection} from "../firebase/collections/documentCollection";
 import {PageList} from "../components";
+import {useRouter} from "next/router";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -12,6 +14,12 @@ interface Props {
 
 export default function List(props: Props) {
   const {documents} = props;
+  const router = useRouter();
+
+  const handleCreateNewPage = useCallback(async () => {
+    const res = await axios.post('/documents');
+    await router.push(`/pages/${res.data.id}`);
+  }, [router]);
 
   return (
     <>
@@ -25,9 +33,9 @@ export default function List(props: Props) {
       </Banner>
       <ListWrapper>
         <Header>📓 Notion Clone</Header>
-        <CreateNewPageButton>create new page</CreateNewPageButton>
+        <CreateNewPageButton onClick={handleCreateNewPage}>create new page</CreateNewPageButton>
         <HorizontalDivider/>
-        {documents ? <PageList documents={documents}/> : null}
+        {documents ? <PageList documents={documents} onCreateNewPage={handleCreateNewPage}/> : null}
       </ListWrapper>
     </>
   );
