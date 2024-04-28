@@ -4,7 +4,7 @@ import {notionCloneFirestore} from "../index";
 export type DocumentCollection = {
     id: string;
     title: string;
-    data: JSON;
+    data: JSON | null;
 }
 
 export const saveDocument = async (data: DocumentCollection) => {
