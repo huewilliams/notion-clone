@@ -15,6 +15,7 @@ import {bulletListTransaction, dividerTransaction, headerTransaction, numberList
 interface Props {
   placeholder?: string;
   slashCommand?: (isSingle: boolean) => void;
+  defaultState?: JSON;
 }
 
 export type InsertNodeCommand = 'divider' | 'bulletedList' | 'numberedList' | 'h1' | 'h2' | 'h3';
@@ -24,7 +25,9 @@ export interface EditorRef {
   getData: () => any;
 }
 
-export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand}, ref) => {
+export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
+  const {defaultState, placeholder, slashCommand} = props;
+
   const editorRef = useRef<HTMLDivElement>(null);
   const plugins = [
     keymap({'Enter': enterCommand}),
@@ -35,12 +38,13 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand},
     handlePastePlugin(),
   ];
 
-  const [state, setState] = useState(
-    EditorState.create({
-      schema,
-      plugins,
-    })
-  );
+  const [state, setState] = useState(() => {
+    if (defaultState) {
+      return EditorState.fromJSON({schema, plugins,}, defaultState);
+    }
+
+    return EditorState.create({schema, plugins});
+  });
   const [newState, setNewState] = useState<EditorState | null>(null);
   const [innerView, setInnerView] = useState<EditorView | null>(null);
 
@@ -60,7 +64,7 @@ export const Editor = forwardRef<EditorRef, Props>(({placeholder, slashCommand},
     return () => {
       view.destroy();
     }
-  }, [slashCommand, state]);
+  }, [defaultState, slashCommand, state]);
 
   useEffect(() => {
     if (location.hash.length > 1) {
