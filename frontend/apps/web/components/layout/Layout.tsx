@@ -2,10 +2,12 @@ import {PropsWithChildren} from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import useDocumentStore from "../../store/documentStore";
 
 export default function Layout({children}: PropsWithChildren) {
   const {pathname, asPath} = useRouter();
   const isInitialPage = pathname === "/pages/[pageId]";
+  const documentTitle = useDocumentStore((state) => state.title);
 
   return (
     <>
@@ -20,7 +22,7 @@ export default function Layout({children}: PropsWithChildren) {
             <Divider>/</Divider>
             <Link href={asPath}>
               <LinkButton>
-                📄 Initial Page
+                📄 {documentTitle}
               </LinkButton>
             </Link>
           </>

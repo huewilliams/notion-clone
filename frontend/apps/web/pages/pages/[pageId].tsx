@@ -2,12 +2,13 @@ import styled from "@emotion/styled";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import {GetServerSideProps} from "next";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
 import {DocumentCollection, saveDocument} from "../../firebase/collections/documentCollection";
 import axios from "axios";
+import useDocumentStore from "../../store/documentStore";
 
 interface Props {
   data: DocumentCollection | null;
@@ -17,14 +18,19 @@ export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
+  const {title, setTitle} = useDocumentStore((state) => state);
 
   const handleSaveDocument = () => {
     saveDocument({
       id: router.query.pageId as string,
-      title: 'Initial Page',
+      title: title,
       data: ref.current?.getData() ?? {}
     });
   }
+
+  useEffect(() => {
+    setTitle(data?.title ?? "Untitled");
+  }, [data?.title, setTitle]);
 
   return (
     <>
