@@ -15,7 +15,7 @@ import {bulletListTransaction, dividerTransaction, headerTransaction, numberList
 interface Props {
   placeholder?: string;
   slashCommand?: (isSingle: boolean) => void;
-  defaultState?: JSON;
+  defaultState?: JSON | null;
 }
 
 export type InsertNodeCommand = 'divider' | 'bulletedList' | 'numberedList' | 'h1' | 'h2' | 'h3';

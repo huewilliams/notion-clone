@@ -1,13 +1,19 @@
 import styled from "@emotion/styled";
 import {useRouter} from "next/router";
 import Image from "next/image";
+import {GetServerSideProps} from "next";
 import {useRef} from "react";
 import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
-import {saveDocument} from "../../firebase/collections/documentCollection";
+import {DocumentCollection, saveDocument} from "../../firebase/collections/documentCollection";
+import axios from "axios";
 
-export default function Page() {
+interface Props {
+  data: DocumentCollection | null;
+}
+
+export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
@@ -28,12 +34,13 @@ export default function Page() {
       <Wrapper>
         <Emoji>📄</Emoji>
         <Button onClick={handleSaveDocument}>save</Button>
-        <Title>Initial Page</Title>
+        <Title placeholder={"Untitled"}>{data?.title}</Title>
         <EditorWrapper>
           <Editor
             placeholder={"Input Anything!"}
             ref={ref}
             slashCommand={handleSlashCommand}
+            defaultState={data?.data}
           />
         </EditorWrapper>
       </Wrapper>
@@ -46,6 +53,17 @@ export default function Page() {
       />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {pageId} = context.query;
+  const res = await axios.get<{data: DocumentCollection}>(`/documents/${pageId}`);
+
+  return {
+    props: {
+      data: res.status === 200 ? res.data : null
+    }
+  };
 }
 
 const Banner = styled.div`
