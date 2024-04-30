@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import {PlusSvg} from "../../assets/svgs";
 import {PageListItem} from "../index";
 import {DocumentCollection} from "../../firebase/collections/documentCollection";
+import {useCallback, useState} from "react";
 
 interface Props {
   documents: DocumentCollection[];
@@ -9,12 +10,19 @@ interface Props {
 }
 
 export default function PageList({documents, onCreateNewPage}: Props) {
+  const [disabled, setDisabled] = useState(false);
+
+  const handleCreateNewPage = useCallback(() => {
+    setDisabled(true);
+    onCreateNewPage();
+  }, [onCreateNewPage]);
+
   return (
     <Wrapper>
       {documents.map(document => (
         <PageListItem page={{title: document.title, id: document.id}}/>
       ))}
-      <CreateNewPageButton onClick={onCreateNewPage}>
+      <CreateNewPageButton disabled={disabled} onClick={handleCreateNewPage}>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
       </CreateNewPageButton>
