@@ -13,16 +13,17 @@ export default function PageList({documents, onCreateNewPage}: Props) {
   const [disabled, setDisabled] = useState(false);
 
   const handleCreateNewPage = useCallback(() => {
+    if (disabled) return;
     setDisabled(true);
     onCreateNewPage();
-  }, [onCreateNewPage]);
+  }, [disabled, onCreateNewPage]);
 
   return (
     <Wrapper>
       {documents.map(document => (
         <PageListItem page={{title: document.title, id: document.id}}/>
       ))}
-      <CreateNewPageButton disabled={disabled} onClick={handleCreateNewPage}>
+      <CreateNewPageButton onClick={handleCreateNewPage}>
         <PlusSvg width={20}/>
         <ButtonText>create new page</ButtonText>
       </CreateNewPageButton>
