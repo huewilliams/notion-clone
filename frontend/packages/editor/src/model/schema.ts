@@ -1,6 +1,7 @@
 import {Schema} from "prosemirror-model";
+import {updateImageNode, defaultSettings} from "prosemirror-image-plugin";
 
-export const schema = new Schema({
+const _schema = new Schema({
     nodes: {
         doc: {
             content: '(block | test)+',
@@ -81,4 +82,9 @@ export const schema = new Schema({
             }
         },
     }
+});
+
+export const schema: Schema = new Schema({
+    nodes: updateImageNode(_schema.spec.nodes, {...defaultSettings}),
+    marks: _schema.spec.marks
 });
