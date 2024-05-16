@@ -5,15 +5,12 @@ import {EditorView} from "prosemirror-view";
 import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
 import {schema} from "@src/model";
-import {handlePastePlugin, placeholderPlugin} from "@src/plugins";
+import {handlePastePlugin, imagePlugin, placeholderPlugin} from "@src/plugins";
 import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand, enterCommand, tabCommand} from "@src/commands";
 import "./Editor.css";
 import {bulletListTransaction, dividerTransaction, headerTransaction, numberListTransaction} from "@src/transactions";
-import {imagePlugin, defaultSettings} from "prosemirror-image-plugin";
 import "prosemirror-image-plugin/dist/styles/common.css";
-import "prosemirror-image-plugin/dist/styles/withResize.css";
-import "prosemirror-image-plugin/dist/styles/sideResize.css";
 
 interface Props {
   placeholder?: string;
@@ -39,7 +36,7 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
     keymap(baseKeymap),
     placeholderPlugin(placeholder),
     handlePastePlugin(),
-    imagePlugin({...defaultSettings})
+    imagePlugin()
   ];
 
   const [state, setState] = useState(() => {
