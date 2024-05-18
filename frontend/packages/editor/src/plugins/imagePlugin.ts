@@ -32,6 +32,7 @@ export const createOverlay = () => {
 export function imagePlugin() {
     return _imagePlugin({
         ...defaultSettings,
-        createOverlay
+        createOverlay,
+        hasTitle: false,
     });
 }
