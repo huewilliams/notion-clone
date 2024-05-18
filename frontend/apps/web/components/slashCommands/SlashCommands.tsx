@@ -74,7 +74,7 @@ export default function SlashCommands({show, rect, isSingle, insertNodeCommand, 
   if (!show) return null;
 
   return (
-    <Wrapper ref={ref} style={{top: rect?.top, left: (rect?.left ?? 0) - (isSingle ? 100 : 0)}}>
+    <Wrapper ref={ref} style={{top: (rect?.top ?? 0) + window.scrollY, left: (rect?.left ?? 0) - (isSingle ? 100 : 0)}}>
       <Button selected={currentCommand === 'h1'} onClick={handleCommand('h1')}>
         <Title>Heading 1</Title>
         <Description>Big section heading.</Description>
