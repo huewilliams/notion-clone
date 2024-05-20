@@ -1,7 +1,7 @@
 import {EditorState, TextSelection} from "prosemirror-state";
 import {schema} from "@src/model";
 
-export function numberListTransaction(state: EditorState, frontNumber: string) {
+export function numberListTransaction(state: EditorState, frontNumber: string, isInsert?: boolean) {
     const listItem = schema.nodes.listItem.createAndFill();
     const numberList = schema.nodes.numberList.create({start: Number(frontNumber)}, listItem);
     if (!listItem || !numberList) return null;
@@ -11,7 +11,8 @@ export function numberListTransaction(state: EditorState, frontNumber: string) {
 
     const {tr} = state;
     tr.replaceWith(from, to, numberList);
-    tr.setSelection(new TextSelection(tr.doc.resolve(from), tr.doc.resolve(from)));
+    const pos = isInsert ? tr.doc.resolve(to + 1) : tr.doc.resolve(from);
+    tr.setSelection(new TextSelection(pos));
 
     return tr;
 }

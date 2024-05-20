@@ -63,7 +63,7 @@ export function androidKeymap(
     isEqualDifferencePartToExpectChar(currentTextContent, textContentBeforeCurrent, "-") !== -1;
   const isDoubleDashExist = prevTextContent === "--";
   if (isDashInput && isDoubleDashExist) {
-    return dividerTransaction(tr) ?? tr;
+    return dividerTransaction(tr, 4) ?? tr;
   }
 
   const isSlashInput = lastText === "/";

@@ -9,7 +9,7 @@ import {handlePastePlugin, imagePlugin, placeholderPlugin} from "@src/plugins";
 import {androidKeymap} from "./android/androidKeymap";
 import {backspaceCommand, enterCommand, tabCommand} from "@src/commands";
 import "./Editor.css";
-import {bulletListTransaction, dividerTransaction, headerTransaction, numberListTransaction} from "@src/transactions";
+import {bulletListTransaction, dividerTransaction, insertHeaderTransaction, numberListTransaction} from "@src/transactions";
 import "prosemirror-image-plugin/dist/styles/common.css";
 
 interface Props {
@@ -78,22 +78,22 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
         if (!innerView) return;
         switch (command) {
           case "divider":
-            applyTransaction(dividerTransaction(innerView.state.tr));
+            applyTransaction(dividerTransaction(innerView.state.tr, 3));
             break;
           case "bulletedList":
-            applyTransaction(bulletListTransaction(innerView.state));
+            applyTransaction(bulletListTransaction(innerView.state, true));
             break;
           case "numberedList":
-            applyTransaction(numberListTransaction(innerView.state, '1'));
+            applyTransaction(numberListTransaction(innerView.state, '1', true));
             break;
           case "h1":
-            applyTransaction(headerTransaction(innerView.state, 1));
+            applyTransaction(insertHeaderTransaction(innerView.state, 1));
             break;
           case "h2":
-            applyTransaction(headerTransaction(innerView.state, 2));
+            applyTransaction(insertHeaderTransaction(innerView.state, 2));
             break;
           case "h3":
-            applyTransaction(headerTransaction(innerView.state, 3));
+            applyTransaction(insertHeaderTransaction(innerView.state, 3));
             break;
         }
       },

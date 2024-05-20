@@ -5,3 +5,4 @@ export * from "./inlineCodeTransaction";
 export * from "./linkTransaction";
 export * from "./bulletListTransaction";
 export * from "./numberListTransaction";
+export * from "./insertHeaderTransaction";
