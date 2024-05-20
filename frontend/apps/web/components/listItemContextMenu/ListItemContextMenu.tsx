@@ -3,6 +3,8 @@ import {DeleteSvg, LinkSvg} from "../../assets/svgs";
 import {useCallback} from "react";
 import {deleteDocument} from "../../firebase/collections/documentCollection";
 import {useRouter} from "next/router";
+import {toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {
   opened: boolean;
@@ -19,12 +21,31 @@ export default function ListItemContextMenu({opened, x, y, documentId}: Props) {
     router.replace(router.asPath);
   }, [documentId, router]);
 
+  const handleCopyLink = useCallback(() => {
+    const pageLink = window.location.href + `pages/${documentId}`;
+    navigator.clipboard.writeText(pageLink)
+      .then(() => {
+        toast('link copied!', {
+          hideProgressBar: true,
+          autoClose: 3000,
+          closeButton: false,
+          position: "bottom-center",
+          style: {
+            fontSize: '1.5rem',
+            width: 'fit-content',
+            margin: '0 auto'
+          },
+          theme: "dark"
+        });
+      });
+  }, [documentId]);
+
   if (!opened) return null;
 
   return (
     <Wrapper style={{left: x, top: y + window.scrollY}}>
       <Button isWarning onClick={handleDelete}><DeleteSvg/>delete</Button>
-      <Button><LinkSvg/>copy link</Button>
+      <Button onClick={handleCopyLink}><LinkSvg/>copy link</Button>
     </Wrapper>
   );
 }

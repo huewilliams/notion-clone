@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import useDocumentStore from "../../store/documentStore";
+import {ToastContainer} from "react-toastify";
 
 export default function Layout({children}: PropsWithChildren) {
   const {pathname, asPath} = useRouter();
@@ -28,7 +29,10 @@ export default function Layout({children}: PropsWithChildren) {
           </>
         )}
       </Header>
-      <main>{children}</main>
+      <main>
+        <ToastContainer/>
+        {children}
+      </main>
     </>
   )
 }
