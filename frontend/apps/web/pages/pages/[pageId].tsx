@@ -9,6 +9,7 @@ import {useSlashCommand} from "../../hooks";
 import {DocumentCollection, saveDocument} from "../../firebase/collections/documentCollection";
 import axios from "axios";
 import useDocumentStore from "../../store/documentStore";
+import {debounce} from "lodash";
 
 interface Props {
   data: DocumentCollection | null;
@@ -43,7 +44,6 @@ export default function Page({data}: Props) {
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
-        <Button onClick={handleDocumentSave}>save</Button>
         <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
         <EditorWrapper>
           <Editor
@@ -51,6 +51,7 @@ export default function Page({data}: Props) {
             ref={ref}
             slashCommand={handleSlashCommand}
             defaultState={data?.data}
+            onChange={debounce(handleDocumentSave, 300)}
           />
         </EditorWrapper>
       </Wrapper>
@@ -104,8 +105,4 @@ const Title = styled.input`
 
 const EditorWrapper = styled.div`
   font-size: 1.5rem;
-`;
-
-const Button = styled.button`
-  outline: none;
 `;
