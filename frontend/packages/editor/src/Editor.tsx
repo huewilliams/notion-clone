@@ -16,6 +16,7 @@ interface Props {
   placeholder?: string;
   slashCommand?: (isSingle: boolean) => void;
   defaultState?: JSON | null;
+  onChange?: () => void;
 }
 
 export type InsertNodeCommand = 'divider' | 'bulletedList' | 'numberedList' | 'h1' | 'h2' | 'h3';
@@ -57,6 +58,7 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
         newTr.removeStoredMark(schema.marks.inlineCode);
         const newState = view.state.apply(newTr);
         view.updateState(newState);
+        props.onChange?.();
       },
     });
     setInnerView(view);
@@ -64,7 +66,7 @@ export const Editor = forwardRef<EditorRef, Props>((props, ref) => {
     return () => {
       view.destroy();
     }
-  }, [defaultState, slashCommand, state]);
+  }, [defaultState, props, slashCommand, state]);
 
   const applyTransaction = useCallback((tr: Transaction | null) => {
     if (!tr || !innerView) return;
