@@ -1,4 +1,4 @@
-import {setDoc, doc} from "firebase/firestore";
+import {setDoc, doc, deleteDoc} from "firebase/firestore";
 import {notionCloneFirestore} from "../index";
 
 export type DocumentCollection = {
@@ -9,4 +9,8 @@ export type DocumentCollection = {
 
 export const saveDocument = async (data: DocumentCollection) => {
     await setDoc(doc(notionCloneFirestore, "document", data.id), data);
+}
+
+export const deleteDocument = async (dataId: string) => {
+  await deleteDoc(doc(notionCloneFirestore, "document", dataId));
 }

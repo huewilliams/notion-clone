@@ -44,7 +44,7 @@ export default function PageListItem({page: {title, id}}: Props) {
           <Title>{title}</Title>
         </Wrapper>
       </Link>
-      <ListItemContextMenu opened={contextMenuOpened} x={clientX} y={clientY}/>
+      <ListItemContextMenu documentId={id} opened={contextMenuOpened} x={clientX} y={clientY}/>
     </div>
   )
 }
