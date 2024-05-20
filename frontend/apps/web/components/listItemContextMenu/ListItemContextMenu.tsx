@@ -11,7 +11,7 @@ export default function ListItemContextMenu({opened, x, y}: Props) {
   if (!opened) return null;
 
   return (
-    <Wrapper style={{left: x, top: y}}>
+    <Wrapper style={{left: x, top: y + window.scrollY}}>
       <Button isWarning><DeleteSvg/>delete</Button>
       <Button><LinkSvg/>copy link</Button>
     </Wrapper>

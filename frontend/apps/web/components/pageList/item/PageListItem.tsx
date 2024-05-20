@@ -39,7 +39,7 @@ export default function PageListItem({page: {title, id}}: Props) {
   return (
     <div ref={divRef}>
       <Link href={`/pages/${id}`} onMouseDown={handleMouseDown}>
-        <Wrapper>
+        <Wrapper active={contextMenuOpened}>
           <Icon iconName={"document"} width={20} height={20}/>
           <Title>{title}</Title>
         </Wrapper>
@@ -49,7 +49,11 @@ export default function PageListItem({page: {title, id}}: Props) {
   )
 }
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  active?: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
   padding: 6px;
 
@@ -57,9 +61,10 @@ const Wrapper = styled.div`
   border-radius: 6px;
   cursor: pointer;
   font-size: 1.5rem;
+  background: ${(props) => props.active ? '#E0EDFB' : 'none'};
   
   &:hover {
-    background: #EBEBEB;
+    background: ${(props) => props.active ? '#E0EDFB' : '#EBEBEB'};
   }
 `;
 
