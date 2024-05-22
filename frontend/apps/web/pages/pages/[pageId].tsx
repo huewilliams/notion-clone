@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import {GetServerSideProps} from "next";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
@@ -10,6 +10,7 @@ import {DocumentCollection, saveDocument} from "../../firebase/collections/docum
 import axios from "axios";
 import useDocumentStore from "../../store/documentStore";
 import {debounce} from "lodash";
+import ChangeBannerImageModal from "../../components/changeBannerImageModal/ChangeBannerImageModal";
 
 interface Props {
   data: DocumentCollection | null;
@@ -20,6 +21,7 @@ export default function Page({data}: Props) {
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
   const {title, setTitle} = useDocumentStore((state) => state);
+  const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
 
   const handleDocumentSave = () => {
     saveDocument({
@@ -48,9 +50,14 @@ export default function Page({data}: Props) {
           sizes={'100vw'}
           style={{width: '100%', minHeight: '200px'}}
         />
-        <ChangeCoverButton>Change Cover</ChangeCoverButton>
+        <ChangeCoverButton
+          onClick={() => setChangeBannerImageModalOpened(!changeBannerImageModalOpened)}
+        >
+          Change Cover
+        </ChangeCoverButton>
         <ChangePositionButton>Change Position</ChangePositionButton>
       </Banner>
+      {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
       <Wrapper>
         <Emoji>📄</Emoji>
         <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
