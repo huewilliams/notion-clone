@@ -46,8 +46,10 @@ export default function Page({data}: Props) {
           width={0}
           height={0}
           sizes={'100vw'}
-          style={{width: '100%'}}
+          style={{width: '100%', minHeight: '200px'}}
         />
+        <ChangeCoverButton>Change Cover</ChangeCoverButton>
+        <ChangePositionButton>Change Position</ChangePositionButton>
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
@@ -113,4 +115,32 @@ const Title = styled.input`
 
 const EditorWrapper = styled.div`
   font-size: 1.5rem;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  padding: 4px;
+  outline: none;
+  border: none;
+  background: white;
+  z-index: 100;
+  bottom: 10px;
+  cursor: pointer;
+  color: #B4B4B4;
+
+  &:hover {
+    background: #EBEBEB;
+  }
+`;
+
+const ChangeCoverButton = styled(Button)`
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  right: 124px;
+`;
+
+const ChangePositionButton = styled(Button)`
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  right: 20px;
 `;
