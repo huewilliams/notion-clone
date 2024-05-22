@@ -40,7 +40,14 @@ export default function Page({data}: Props) {
   return (
     <>
       <Banner>
-        <Image src={"/images/santorini.jpg"} alt={"santorini banner"} fill style={{objectFit: "cover"}}/>
+        <Image
+          src={"/images/santorini.jpg"}
+          alt={"santorini banner"}
+          width={0}
+          height={0}
+          sizes={'100vw'}
+          style={{width: '100%'}}
+        />
       </Banner>
       <Wrapper>
         <Emoji>📄</Emoji>
@@ -79,6 +86,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Banner = styled.div`
   position: relative;
+  overflow: hidden;
   user-select: none;
   width: 100%;
   height: 200px;
