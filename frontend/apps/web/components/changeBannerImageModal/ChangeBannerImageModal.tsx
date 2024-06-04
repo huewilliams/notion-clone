@@ -1,9 +1,22 @@
 import styled from "@emotion/styled";
+import React from "react";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {storage} from "../../firebase";
 
 export default function ChangeBannerImageModal() {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const imageRef = ref(storage, `images/${file.name}`);
+    const snapshot = await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(snapshot.ref);
+  }
+
   return (
     <Wrapper>
-      <Button>upload file</Button>
+      <FileUploadLabel htmlFor="file">upload file</FileUploadLabel>
+      <input onChange={handleFileChange} id={"file"} style={{width: 0, height: 0}} type={"file"}/>
       <GuideText>Images wider than 1500 pixels work best.</GuideText>
     </Wrapper>
   );
@@ -29,7 +42,7 @@ const Wrapper = styled.div`
   0 32px 32px rgba(0,0,0,0.11);
 `;
 
-const Button = styled.button`
+const FileUploadLabel = styled.label`
   width: 100%;
   padding: 4px 0;
   color: #4E4E4E;
@@ -38,6 +51,7 @@ const Button = styled.button`
   border-radius: 4px;
   outline: none;
   cursor: pointer;
+  text-align: center;
 
   &:hover {
     background: #EBEBEB;
