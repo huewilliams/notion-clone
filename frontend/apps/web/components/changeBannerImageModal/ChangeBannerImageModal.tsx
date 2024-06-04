@@ -2,8 +2,12 @@ import styled from "@emotion/styled";
 import React from "react";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {storage} from "../../firebase";
+import useDocumentStore from "../../store/documentStore";
+import {saveDocument} from "../../firebase/collections/documentCollection";
 
 export default function ChangeBannerImageModal() {
+  const {document, updateBannerUrl} = useDocumentStore((state) => state);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -11,6 +15,8 @@ export default function ChangeBannerImageModal() {
     const imageRef = ref(storage, `images/${file.name}`);
     const snapshot = await uploadBytes(imageRef, file);
     const url = await getDownloadURL(snapshot.ref);
+    updateBannerUrl(url);
+    saveDocument(document);
   }
 
   return (

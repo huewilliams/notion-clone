@@ -20,31 +20,38 @@ export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
-  const {title, setTitle} = useDocumentStore((state) => state);
+  const {document, updateTitle, setDocument} = useDocumentStore((state) => state);
+  const {title, bannerUrl} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
 
   const handleDocumentSave = () => {
     saveDocument({
       id: router.query.pageId as string,
-      title: title,
+      title,
       data: ref.current?.getData() ?? {},
-      bannerUrl: "/images/santorini.jpg",
+      bannerUrl,
     });
   }
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    updateTitle(e.target.value);
   }
 
   useEffect(() => {
-    setTitle(data?.title ?? "Untitled");
-  }, [data?.title, setTitle]);
+    updateTitle(data?.title ?? "Untitled");
+  }, [data?.title, updateTitle]);
+
+  useEffect(() => {
+    if (data) {
+      setDocument(data);
+    }
+  }, [data, setDocument]);
 
   return (
     <>
       <Banner>
         <Image
-          src={data?.bannerUrl ?? ""}
+          src={document.bannerUrl}
           alt={"santorini banner"}
           width={0}
           height={0}

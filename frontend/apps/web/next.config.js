@@ -8,6 +8,9 @@ const nextConfig = {
   experimental: {
     transpilePackages: ["ui"],
   },
+  images: {
+    domains: ['firebasestorage.googleapis.com']
+  }
 };
 
 module.exports = withTM(nextConfig);

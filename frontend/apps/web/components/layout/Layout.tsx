@@ -8,7 +8,7 @@ import {ToastContainer} from "react-toastify";
 export default function Layout({children}: PropsWithChildren) {
   const {pathname, asPath} = useRouter();
   const isInitialPage = pathname === "/pages/[pageId]";
-  const documentTitle = useDocumentStore((state) => state.title);
+  const documentTitle = useDocumentStore((state) => state.document.title);
 
   return (
     <>
