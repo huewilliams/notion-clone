@@ -27,7 +27,8 @@ export default function Page({data}: Props) {
     saveDocument({
       id: router.query.pageId as string,
       title: title,
-      data: ref.current?.getData() ?? {}
+      data: ref.current?.getData() ?? {},
+      bannerUrl: "/images/santorini.jpg",
     });
   }
 
@@ -43,7 +44,7 @@ export default function Page({data}: Props) {
     <>
       <Banner>
         <Image
-          src={"/images/santorini.jpg"}
+          src={data?.bannerUrl ?? ""}
           alt={"santorini banner"}
           width={0}
           height={0}

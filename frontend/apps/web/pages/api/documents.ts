@@ -17,7 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await saveDocument({
             id,
             title: 'New Page',
-            data: null
+            data: null,
+            bannerUrl: "/images/santorini.jpg",
         });
         res.status(201).json({id});
         return;

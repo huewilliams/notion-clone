@@ -5,6 +5,7 @@ export type DocumentCollection = {
     id: string;
     title: string;
     data: JSON | null;
+    bannerUrl: string;
 }
 
 export const saveDocument = async (data: DocumentCollection) => {
