@@ -16,7 +16,7 @@ export default function ChangeBannerImageModal() {
     const snapshot = await uploadBytes(imageRef, file);
     const url = await getDownloadURL(snapshot.ref);
     updateBannerUrl(url);
-    saveDocument(document);
+    saveDocument({...document, bannerUrl: url});
   }
 
   return (
