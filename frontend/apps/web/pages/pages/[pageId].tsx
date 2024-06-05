@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import {GetServerSideProps} from "next";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Editor, EditorRef} from "editor";
 import {SlashCommands} from "../../components";
 import {useSlashCommand} from "../../hooks";
@@ -24,14 +24,14 @@ export default function Page({data}: Props) {
   const {title, bannerUrl} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
 
-  const handleDocumentSave = () => {
+  const handleDocumentSave = useCallback(() => {
     saveDocument({
       id: router.query.pageId as string,
       title,
       data: ref.current?.getData() ?? {},
       bannerUrl,
     });
-  }
+  }, [bannerUrl, router.query.pageId, title]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateTitle(e.target.value);
@@ -46,6 +46,14 @@ export default function Page({data}: Props) {
       setDocument(data);
     }
   }, [data, setDocument]);
+
+  useEffect(() => {
+    const handler = debounce(handleDocumentSave, 300);
+    window.addEventListener('keydown', handler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+    }
+  }, [handleDocumentSave]);
 
   return (
     <>
@@ -75,7 +83,6 @@ export default function Page({data}: Props) {
             ref={ref}
             slashCommand={handleSlashCommand}
             defaultState={data?.data}
-            onChange={debounce(handleDocumentSave, 300)}
           />
         </EditorWrapper>
       </Wrapper>
