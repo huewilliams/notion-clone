@@ -16,6 +16,8 @@ interface Props {
   data: DocumentCollection | null;
 }
 
+const BANNER_BOX_HEIGHT = 200;
+
 export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
@@ -27,6 +29,8 @@ export default function Page({data}: Props) {
   const [bottom, setBottom] = useState(0);
   const [y, setY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const bannerRef = useRef<HTMLImageElement | null>(null);
+  const [bannerMaxHeight, setBannerMaxHeight] = useState(0);
 
   const handleDocumentSave = useCallback(() => {
     saveDocument({
@@ -42,23 +46,23 @@ export default function Page({data}: Props) {
   }
 
   const mouseMoveHandler = useCallback((e: MouseEvent) => {
-    console.log('move : ', e.clientX, e.clientY, isDragging)
     if (!isDragging || e.clientX === 0) return;
     const dy = e.clientY - y;
-    if (bottom + dy > 0) setBottom(bottom + dy);
+    if (bottom + dy > 0 && (bottom + dy + BANNER_BOX_HEIGHT) < bannerMaxHeight) {
+      setBottom(bottom + dy);
+    }
     setY(e.clientY);
-  }, [bottom, isDragging, y])
+  }, [bannerMaxHeight, bottom, isDragging, y])
 
   const mouseUpHandler = useCallback((e: MouseEvent) => {
-    console.log('up')
     if (isRepositionMode && isDragging) {
       setIsDragging(false);
     }
   }, [isDragging, isRepositionMode]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    console.log('down')
     setY(e.clientY);
+    setBannerMaxHeight(bannerRef.current?.getBoundingClientRect().height ?? 0);
     setIsDragging(true);
   }
 
@@ -106,6 +110,7 @@ export default function Page({data}: Props) {
       <>
         <Banner>
           <Image
+              ref={bannerRef}
               src={document.bannerUrl}
               alt={"santorini banner"}
               width={0}
