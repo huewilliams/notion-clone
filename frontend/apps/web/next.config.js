@@ -1,4 +1,3 @@
-const withTM = require("next-transpile-modules")(["editor"]);
 
 const nextConfig = {
   reactStrictMode: true,
@@ -10,7 +9,8 @@ const nextConfig = {
   },
   images: {
     domains: ['firebasestorage.googleapis.com']
-  }
+  },
+  transpilePackages: ["editor"],
 };
 
-module.exports = withTM(nextConfig);
+module.exports = nextConfig;
