@@ -23,6 +23,10 @@ export default function Page({data}: Props) {
   const {document, updateTitle, setDocument} = useDocumentStore((state) => state);
   const {title, bannerUrl} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
+  const [isRepositionMode, setIsRepositionMode] = useState(false);
+  const [bottom, setBottom] = useState(0);
+  const [y, setY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDocumentSave = useCallback(() => {
     saveDocument({
@@ -35,6 +39,27 @@ export default function Page({data}: Props) {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateTitle(e.target.value);
+  }
+
+  const mouseMoveHandler = useCallback((e: MouseEvent) => {
+    console.log('move : ', e.clientX, e.clientY, isDragging)
+    if (!isDragging || e.clientX === 0) return;
+    const dy = e.clientY - y;
+    if (bottom + dy > 0) setBottom(bottom + dy);
+    setY(e.clientY);
+  }, [bottom, isDragging, y])
+
+  const mouseUpHandler = useCallback((e: MouseEvent) => {
+    console.log('up')
+    if (isRepositionMode && isDragging) {
+      setIsDragging(false);
+    }
+  }, [isDragging, isRepositionMode]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    console.log('down')
+    setY(e.clientY);
+    setIsDragging(true);
   }
 
   useEffect(() => {
@@ -55,45 +80,77 @@ export default function Page({data}: Props) {
     }
   }, [handleDocumentSave]);
 
+  useEffect(() => {
+    const handler = debounce(handleDocumentSave, 300);
+    window.addEventListener('keydown', handler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+    }
+  }, [handleDocumentSave]);
+
+  useEffect(() => {
+    if (isDragging && isRepositionMode) {
+      window.addEventListener('mouseup', mouseUpHandler);
+      window.addEventListener('mousemove', mouseMoveHandler);
+    } else {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+      window.removeEventListener('mouseup', mouseUpHandler);
+    }
+    return () => {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+      window.removeEventListener('mouseup', mouseUpHandler);
+    }
+  }, [isDragging, isRepositionMode, mouseMoveHandler, mouseUpHandler]);
+
   return (
-    <>
-      <Banner>
-        <Image
-          src={document.bannerUrl}
-          alt={"santorini banner"}
-          width={0}
-          height={0}
-          sizes={'100vw'}
-          style={{width: '100%', minHeight: '200px'}}
-        />
-        <ChangeCoverButton
-          onClick={() => setChangeBannerImageModalOpened(!changeBannerImageModalOpened)}
-        >
-          Change Cover
-        </ChangeCoverButton>
-        <ChangePositionButton>Change Position</ChangePositionButton>
-      </Banner>
-      {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
-      <Wrapper>
-        <Emoji>📄</Emoji>
-        <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
-        <EditorWrapper>
-          <Editor
-            placeholder={"Input Anything!"}
-            ref={ref}
-            slashCommand={handleSlashCommand}
-            defaultState={data?.data}
+      <>
+        <Banner>
+          <Image
+              src={document.bannerUrl}
+              alt={"santorini banner"}
+              width={0}
+              height={0}
+              sizes={'100vw'}
+              style={{position: "absolute", width: '100%', minHeight: '200px', cursor: isRepositionMode ? 'move' : 'default', bottom: -bottom}}
+              onMouseDown={handleMouseDown}
+              draggable={false}
           />
-        </EditorWrapper>
-      </Wrapper>
-      <SlashCommands
-        show={showSlashCommands}
-        rect={rect}
-        isSingle={isSingle}
-        insertNodeCommand={ref.current?.insertNode}
-        close={() => setShowSlashCommands(false)}
-      />
-    </>
+          <ChangeCoverButton
+              onClick={() => setChangeBannerImageModalOpened(!changeBannerImageModalOpened)}
+              isRepositionMode={isRepositionMode}
+          >
+            Change Cover
+          </ChangeCoverButton>
+          <ChangePositionButton
+              onClick={e => {
+                e.stopPropagation();
+                setIsRepositionMode(!isRepositionMode);
+              }}
+          >
+            {isRepositionMode ? "Cancel" : "Reposition"}
+          </ChangePositionButton>
+        </Banner>
+        {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
+        <Wrapper>
+          <Emoji>📄</Emoji>
+          <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
+          <EditorWrapper>
+            <Editor
+                placeholder={"Input Anything!"}
+                ref={ref}
+                slashCommand={handleSlashCommand}
+                defaultState={data?.data}
+            />
+          </EditorWrapper>
+        </Wrapper>
+        <SlashCommands
+            show={showSlashCommands}
+            rect={rect}
+            isSingle={isSingle}
+            insertNodeCommand={ref.current?.insertNode}
+            close={() => setShowSlashCommands(false)}
+        />
+      </>
   )
 }
 
@@ -155,10 +212,14 @@ const Button = styled.button`
   }
 `;
 
-const ChangeCoverButton = styled(Button)`
+interface ChangeCoverButtonProps {
+  isRepositionMode: boolean;
+}
+
+const ChangeCoverButton = styled(Button)<ChangeCoverButtonProps>`
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  right: 124px;
+  right: ${(props) => props.isRepositionMode ? 69 : 91}px;
 `;
 
 const ChangePositionButton = styled(Button)`
