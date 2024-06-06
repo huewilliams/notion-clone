@@ -19,6 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             title: 'New Page',
             data: null,
             bannerUrl: "/images/santorini.jpg",
+            bannerPosition: 0,
         });
         res.status(201).json({id});
         return;

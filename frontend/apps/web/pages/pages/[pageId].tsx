@@ -22,11 +22,11 @@ export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
-  const {document, updateTitle, setDocument} = useDocumentStore((state) => state);
-  const {title, bannerUrl} = document;
+  const {document, updateTitle, setDocument, updateBannerPosition} = useDocumentStore((state) => state);
+  const {title, bannerUrl, bannerPosition} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
   const [isRepositionMode, setIsRepositionMode] = useState(false);
-  const [bottom, setBottom] = useState(0);
+  const [bottom, setBottom] = useState(bannerPosition);
   const [y, setY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const bannerRef = useRef<HTMLImageElement | null>(null);
@@ -38,8 +38,9 @@ export default function Page({data}: Props) {
       title,
       data: ref.current?.getData() ?? {},
       bannerUrl,
+      bannerPosition
     });
-  }, [bannerUrl, router.query.pageId, title]);
+  }, [bannerPosition, bannerUrl, router.query.pageId, title]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateTitle(e.target.value);
@@ -65,6 +66,12 @@ export default function Page({data}: Props) {
     setBannerMaxHeight(bannerRef.current?.getBoundingClientRect().height ?? 0);
     setIsDragging(true);
   }
+
+  const handleSavePosition = useCallback(() => {
+        updateBannerPosition(bottom);
+        setIsRepositionMode(false);
+      }
+  , [bottom, updateBannerPosition]);
 
   useEffect(() => {
     updateTitle(data?.title ?? "Untitled");
@@ -106,6 +113,10 @@ export default function Page({data}: Props) {
     }
   }, [isDragging, isRepositionMode, mouseMoveHandler, mouseUpHandler]);
 
+  useEffect(() => {
+    setBottom(bannerPosition);
+  }, [bannerPosition]);
+
   return (
       <>
         <Banner>
@@ -120,16 +131,27 @@ export default function Page({data}: Props) {
               onMouseDown={handleMouseDown}
               draggable={false}
           />
-          <ChangeCoverButton
-              onClick={() => setChangeBannerImageModalOpened(!changeBannerImageModalOpened)}
-              isRepositionMode={isRepositionMode}
-          >
-            Change Cover
-          </ChangeCoverButton>
+          {isRepositionMode && (
+              <SavePositionButton onClick={handleSavePosition}>
+                Save position
+              </SavePositionButton>
+          )}
+          {!isRepositionMode && (
+              <ChangeCoverButton
+                  onClick={() => setChangeBannerImageModalOpened(!changeBannerImageModalOpened)}
+              >
+                Change cover
+              </ChangeCoverButton>
+          )}
           <ChangePositionButton
               onClick={e => {
                 e.stopPropagation();
-                setIsRepositionMode(!isRepositionMode);
+                if (!isRepositionMode) {
+                  setIsRepositionMode(true);
+                } else {
+                  setBottom(bannerPosition);
+                  setIsRepositionMode(false);
+                }
               }}
           >
             {isRepositionMode ? "Cancel" : "Reposition"}
@@ -217,18 +239,20 @@ const Button = styled.button`
   }
 `;
 
-interface ChangeCoverButtonProps {
-  isRepositionMode: boolean;
-}
-
-const ChangeCoverButton = styled(Button)<ChangeCoverButtonProps>`
+const ChangeCoverButton = styled(Button)`
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  right: ${(props) => props.isRepositionMode ? 69 : 91}px;
+  right: 91px;
 `;
 
 const ChangePositionButton = styled(Button)`
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   right: 20px;
+`;
+
+const SavePositionButton = styled(Button)`
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  right: 69px;
 `;
