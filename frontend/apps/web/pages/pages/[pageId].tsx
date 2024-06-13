@@ -4,7 +4,7 @@ import Image from "next/image";
 import {GetServerSideProps} from "next";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Editor, EditorRef} from "editor";
-import {SlashCommands} from "../../components";
+import {SlashCommands, EmojiPicker} from "../../components";
 import {useSlashCommand} from "../../hooks";
 import {DocumentCollection, saveDocument} from "../../firebase/collections/documentCollection";
 import axios from "axios";
@@ -159,7 +159,7 @@ export default function Page({data}: Props) {
         </Banner>
         {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
         <Wrapper>
-          <Emoji>📄</Emoji>
+          <EmojiPicker/>
           <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
           <EditorWrapper>
             <Editor
@@ -202,14 +202,6 @@ const Banner = styled.div`
 
 const Wrapper = styled.div`
   padding: 60px 15%;
-`;
-
-const Emoji = styled.div`
-  position: absolute;
-  user-select: none;
-  top: 160px;
-
-  font-size: 56px;
 `;
 
 const Title = styled.input`
