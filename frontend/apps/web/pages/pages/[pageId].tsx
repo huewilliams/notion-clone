@@ -11,6 +11,7 @@ import axios from "axios";
 import useDocumentStore from "../../store/documentStore";
 import {debounce} from "lodash";
 import ChangeBannerImageModal from "../../components/changeBannerImageModal/ChangeBannerImageModal";
+import {EmojiClickData} from "emoji-picker-react";
 
 interface Props {
   data: DocumentCollection | null;
@@ -22,7 +23,7 @@ export default function Page({data}: Props) {
   const ref = useRef<EditorRef | null>(null);
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
-  const {document, updateTitle, setDocument, updateBannerPosition} = useDocumentStore((state) => state);
+  const {document, updateTitle, setDocument, updateBannerPosition, updateEmoji} = useDocumentStore((state) => state);
   const {title, bannerUrl, bannerPosition, emoji} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
   const [isRepositionMode, setIsRepositionMode] = useState(false);
@@ -73,6 +74,10 @@ export default function Page({data}: Props) {
         setIsRepositionMode(false);
       }
   , [bottom, updateBannerPosition]);
+
+  const handleEmojiClick = useCallback((emojiClickDate: EmojiClickData) => {
+    updateEmoji(emojiClickDate.emoji);
+  }, [updateEmoji]);
 
   useEffect(() => {
     updateTitle(data?.title ?? "Untitled");
@@ -160,7 +165,7 @@ export default function Page({data}: Props) {
         </Banner>
         {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
         <Wrapper>
-          <EmojiPicker emoji={emoji}/>
+          <EmojiPicker emoji={emoji} onEmojiClick={handleEmojiClick}/>
           <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
           <EditorWrapper>
             <Editor

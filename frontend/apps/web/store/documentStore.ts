@@ -7,6 +7,7 @@ interface DocumentState {
   updateTitle: (title: string) => void;
   updateBannerUrl: (bannerUrl: string) => void;
   updateBannerPosition: (bannerPosition: number) => void;
+  updateEmoji: (emoji: string) => void;
 }
 
 const useDocumentStore = create<DocumentState>((set) => ({
@@ -22,6 +23,7 @@ const useDocumentStore = create<DocumentState>((set) => ({
   updateTitle: (title: string) => set((state) => ({ document: {...state.document, title}})),
   updateBannerUrl: (bannerUrl: string) => set((state) => ({ document: {...state.document, bannerUrl}})),
   updateBannerPosition: (bannerPosition: number) => set((state) => ({ document: {...state.document, bannerPosition} })),
+  updateEmoji: (emoji: string) => set((state) => ({ document: {...state.document, emoji }})),
 }));
 
 export default useDocumentStore;

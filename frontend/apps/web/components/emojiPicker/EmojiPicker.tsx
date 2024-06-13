@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import dynamic from "next/dynamic";
 import {useState} from "react";
+import {MouseDownEvent} from "emoji-picker-react/src/config/config";
 
 const Picker = dynamic(
     () => {
@@ -11,16 +12,17 @@ const Picker = dynamic(
 
 interface Props {
     emoji: string;
+    onEmojiClick: MouseDownEvent;
 }
 
-export default function EmojiPicker({emoji}: Props) {
+export default function EmojiPicker({emoji, onEmojiClick}: Props) {
     const [pickerOpened, setPickerOpened] = useState(false);
 
     return (
         <>
             <EmojiButton onClick={() => setPickerOpened(!pickerOpened)}>
                 {emoji}
-                <Picker style={{position: 'absolute', top: '100px'}} open={pickerOpened}/>
+                <Picker style={{position: 'absolute', top: '100px'}} open={pickerOpened} onEmojiClick={onEmojiClick}/>
             </EmojiButton>
         </>
     )
