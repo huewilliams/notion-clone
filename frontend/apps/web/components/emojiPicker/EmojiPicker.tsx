@@ -9,13 +9,17 @@ const Picker = dynamic(
     {ssr: false}
 )
 
-export default function EmojiPicker() {
+interface Props {
+    emoji: string;
+}
+
+export default function EmojiPicker({emoji}: Props) {
     const [pickerOpened, setPickerOpened] = useState(false);
 
     return (
         <>
             <EmojiButton onClick={() => setPickerOpened(!pickerOpened)}>
-                📄
+                {emoji}
                 <Picker style={{position: 'absolute', top: '100px'}} open={pickerOpened}/>
             </EmojiButton>
         </>

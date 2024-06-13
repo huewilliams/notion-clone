@@ -23,7 +23,7 @@ export default function Page({data}: Props) {
   const {handleSlashCommand, showSlashCommands, rect, isSingle, setShowSlashCommands} = useSlashCommand();
   const router = useRouter();
   const {document, updateTitle, setDocument, updateBannerPosition} = useDocumentStore((state) => state);
-  const {title, bannerUrl, bannerPosition} = document;
+  const {title, bannerUrl, bannerPosition, emoji} = document;
   const [changeBannerImageModalOpened, setChangeBannerImageModalOpened] = useState(false);
   const [isRepositionMode, setIsRepositionMode] = useState(false);
   const [bottom, setBottom] = useState(bannerPosition);
@@ -38,9 +38,10 @@ export default function Page({data}: Props) {
       title,
       data: ref.current?.getData() ?? {},
       bannerUrl,
-      bannerPosition
+      bannerPosition,
+      emoji,
     });
-  }, [bannerPosition, bannerUrl, router.query.pageId, title]);
+  }, [bannerPosition, bannerUrl, emoji, router.query.pageId, title]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateTitle(e.target.value);
@@ -159,7 +160,7 @@ export default function Page({data}: Props) {
         </Banner>
         {changeBannerImageModalOpened && <ChangeBannerImageModal/>}
         <Wrapper>
-          <EmojiPicker/>
+          <EmojiPicker emoji={emoji}/>
           <Title placeholder={"Untitled"} value={title} onChange={handleTitleChange}/>
           <EditorWrapper>
             <Editor

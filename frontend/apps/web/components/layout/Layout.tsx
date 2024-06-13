@@ -8,7 +8,7 @@ import {ToastContainer} from "react-toastify";
 export default function Layout({children}: PropsWithChildren) {
   const {pathname, asPath} = useRouter();
   const isInitialPage = pathname === "/pages/[pageId]";
-  const documentTitle = useDocumentStore((state) => state.document.title);
+  const {title, emoji} = useDocumentStore((state) => state.document);
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function Layout({children}: PropsWithChildren) {
             <Divider>/</Divider>
             <Link href={asPath}>
               <LinkButton>
-                📄 {documentTitle}
+                {emoji} {title}
               </LinkButton>
             </Link>
           </>

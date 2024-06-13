@@ -7,6 +7,7 @@ export type DocumentCollection = {
     data: JSON | null;
     bannerUrl: string;
     bannerPosition: number;
+    emoji: string;
 }
 
 export const saveDocument = async (data: DocumentCollection) => {

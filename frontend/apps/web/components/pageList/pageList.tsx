@@ -21,7 +21,7 @@ export default function PageList({documents, onCreateNewPage}: Props) {
   return (
     <Wrapper>
       {documents.map(document => (
-        <PageListItem page={{title: document.title, id: document.id}}/>
+        <PageListItem page={{title: document.title, id: document.id, emoji: document.emoji}}/>
       ))}
       <CreateNewPageButton onClick={handleCreateNewPage}>
         <PlusSvg width={20}/>

@@ -16,6 +16,7 @@ const useDocumentStore = create<DocumentState>((set) => ({
     bannerUrl: '',
     data: null,
     bannerPosition: 0,
+    emoji: '📄',
   },
   setDocument: (document: DocumentCollection) => set({document}),
   updateTitle: (title: string) => set((state) => ({ document: {...state.document, title}})),

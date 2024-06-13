@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
-import {Icon} from "../../index";
 import ListItemContextMenu from "../../listItemContextMenu/ListItemContextMenu";
 
 interface Page {
   title: string;
+  emoji: string;
   id: string;
 }
 
@@ -13,7 +13,7 @@ interface Props {
   page: Page;
 }
 
-export default function PageListItem({page: {title, id}}: Props) {
+export default function PageListItem({page: {title, emoji, id}}: Props) {
   const divRef = useRef<HTMLDivElement | null>(null);
   const [contextMenuOpened, setContextMenuOpened] = useState(false);
   const [clientX, setClientX] = useState(0);
@@ -40,8 +40,7 @@ export default function PageListItem({page: {title, id}}: Props) {
     <div ref={divRef}>
       <Link href={`/pages/${id}`} onMouseDown={handleMouseDown}>
         <Wrapper active={contextMenuOpened}>
-          <Icon iconName={"document"} width={20} height={20}/>
-          <Title>{title}</Title>
+          <Title>{emoji} {title}</Title>
         </Wrapper>
       </Link>
       <ListItemContextMenu documentId={id} opened={contextMenuOpened} x={clientX} y={clientY}/>
